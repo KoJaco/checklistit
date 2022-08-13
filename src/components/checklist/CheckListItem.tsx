@@ -1,4 +1,6 @@
-type CheckListItemProps = {};
+type CheckListItemProps = {
+    children?: JSX.Element;
+};
 
 const CheckListItem = (props: CheckListItemProps) => {
     return <></>;

@@ -1,6 +1,8 @@
 import type { NextPage } from 'next';
 import { trpc } from '@/core/utils/trpc';
 
+import Button from '@/components/elements/Button';
+
 const Me: NextPage = () => {
     const hello = trpc.useQuery(['example.hello', { text: 'from tRPC' }]);
 
@@ -13,6 +15,11 @@ const Me: NextPage = () => {
                     ) : (
                         <p>Loading..</p>
                     )}
+                </div>
+                <div className="pt-6 text-2xl text-blue-500 flex justify-center items-center text-center w-24">
+                    <Button>
+                        <span>Hello</span>
+                    </Button>
                 </div>
             </div>
         </>
