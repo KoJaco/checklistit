@@ -1,5 +1,5 @@
 import { env } from './src/env/server.mjs';
-import withPWA from 'next-pwa';
+// import withPWA from 'next-pwa';
 
 /**
  * Don't be scared of the generics here.
@@ -9,17 +9,20 @@ import withPWA from 'next-pwa';
  * @param {T} config - A generic parameter that flows through to the return type
  * @constraint {{import('next').NextConfig}}
  */
+
 function defineNextConfig(config) {
-    return withPWA(config);
+    return config;
 }
 
-export default defineNextConfig({
+const nextConfig = {
     reactStrictMode: true,
-    swcMinify: true,
-    pwa: {
-        dest: 'public',
-        register: true,
-        skipWaiting: true,
-        disable: process.env.NODE_ENV === 'development',
-    },
-});
+    // swcMinify: true,
+    // pwa: {
+    //     dest: 'public',
+    //     register: true,
+    //     skipWaiting: true,
+    //     disable: process.env.NODE_ENV === 'development',
+    // },
+};
+
+export default defineNextConfig(nextConfig);

@@ -9,7 +9,7 @@ class MyDocument extends Document {
                 <Head>
                     <meta charSet="utf-8" />
                     {/* recognize manifest */}
-                    <link rel="manifest" href="/manifest.json" />
+                    {/* <link rel="manifest" href="/manifest.json" /> */}
 
                     <link
                         rel="preconnect"

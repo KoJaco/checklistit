@@ -4,9 +4,10 @@
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
-    "name": "on-the-go-notes",
-    "short_name": "on-the-go",
-    "description": "Override this",
+    "name": "check-list-it",
+    "orientation": "portrait",
+    "short_name": "checklistit",
+    "description": "Simple or complex todo lists, sortable by folder.",
     "icons": [
         {
             "src": "/icon-192x192.png",
