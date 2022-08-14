@@ -24,6 +24,10 @@ class MyDocument extends Document {
                         href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
                         rel="stylesheet"
                     />
+                    {/* <script
+                        src="node_modules/pouchdb/dist/pouchdb.min.js"
+                        async
+                    ></script> */}
                 </Head>
                 <body>
                     <Main />
