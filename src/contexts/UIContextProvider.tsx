@@ -1,6 +1,6 @@
 // File for controlling global state of components.
 
-import {
+import React, {
     createContext,
     ReactNode,
     useContext,
@@ -28,8 +28,7 @@ interface StateTypes {
         | 'danger'
         | 'light'
         | 'dark';
-    transparentUpperNav: boolean;
-    fixedUpperNav: boolean;
+    activeMenu: boolean;
     openUISettings: boolean;
     direction: 'ltr' | 'rtl';
     layout: 'dashboard' | 'page';
@@ -42,8 +41,7 @@ interface ActionTypes {
         | 'TRANSPARENT_SIDENAV'
         | 'WHITE_SIDENAV'
         | 'SIDENAV_COLOR'
-        | 'TRANSPARENT_UPPERNAV'
-        | 'FIXED_UPPERNAV'
+        | 'ACTIVE_MENU'
         | 'OPEN_UI_SETTINGS'
         | 'DIRECTION'
         | 'LAYOUT'
@@ -66,14 +64,11 @@ function reducer(state: StateTypes, action: ActionTypes) {
         case 'SIDENAV_COLOR': {
             return { ...state, sideNavColor: action.value };
         }
-        case 'TRANSPARENT_UPPERNAV': {
-            return { ...state, transparentUpperNav: action.value };
-        }
-        case 'FIXED_UPPERNAV': {
-            return { ...state, fixedUpperNav: action.value };
+        case 'ACTIVE_MENU': {
+            return { ...state, activeMenu: action.value };
         }
         case 'OPEN_UI_SETTINGS': {
-            return { ...state, openConfigurer: action.value };
+            return { ...state, openUISettings: action.value };
         }
         case 'DIRECTION': {
             return { ...state, direction: action.value };
@@ -91,18 +86,13 @@ function reducer(state: StateTypes, action: ActionTypes) {
     }
 }
 
-function CheckListItControllerProvider({
-    children,
-}: {
-    children: ReactNode;
-}): JSX.Element {
+function UIContextProvider({ children }: { children: ReactNode }): JSX.Element {
     const initialState: StateTypes = {
         miniSideNav: false,
         transparentSideNav: false,
         whiteSideNav: false,
         sideNavColor: 'primary',
-        transparentUpperNav: true,
-        fixedUpperNav: true,
+        activeMenu: false,
         openUISettings: false,
         direction: 'ltr',
         layout: 'dashboard',
@@ -119,12 +109,12 @@ function CheckListItControllerProvider({
 }
 
 // custom hook for using context
-function useCheckListItController() {
+function useUIContextProvider() {
     const context = useContext(CheckListIt);
 
     if (!context) {
         throw new Error(
-            'useQuickNotesController should be used inside of QuickNotesControllerProvider'
+            'useCheckListItController should be used inside of CheckListItControllerProvider'
         );
     }
 
@@ -172,15 +162,10 @@ const setSideNavColor = (
         | 'dark'
 ) => dispatch({ type: 'SIDENAV_COLOR', value });
 
-const setTransparentUpperNav = (
-    dispatch: (arg: { type: 'TRANSPARENT_UPPERNAV'; value: boolean }) => void,
+const setActiveMenu = (
+    dispatch: (arg: { type: 'ACTIVE_MENU'; value: boolean }) => void,
     value: boolean
-) => dispatch({ type: 'TRANSPARENT_UPPERNAV', value });
-
-const setFixedUpperNav = (
-    dispatch: (arg: { type: 'FIXED_UPPERNAV'; value: boolean }) => void,
-    value: boolean
-) => dispatch({ type: 'FIXED_UPPERNAV', value });
+) => dispatch({ type: 'ACTIVE_MENU', value });
 
 const setOpenUISettings = (
     dispatch: (arg: { type: 'OPEN_UI_SETTINGS'; value: boolean }) => void,
@@ -203,14 +188,13 @@ const setDarkMode = (
 ) => dispatch({ type: 'DARK_MODE', value });
 
 export {
-    CheckListItControllerProvider,
-    useCheckListItController,
+    UIContextProvider,
+    useUIContextProvider,
     setMiniSideNav,
     setTransparentSideNav,
     setWhiteSideNav,
     setSideNavColor,
-    setTransparentUpperNav,
-    setFixedUpperNav,
+    setActiveMenu,
     setOpenUISettings,
     setDirection,
     setLayout,
