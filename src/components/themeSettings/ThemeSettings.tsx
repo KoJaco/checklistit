@@ -1,16 +1,46 @@
 import React from 'react';
 import { useUIContext } from '@/contexts/UIContextProvider';
-import { BsCheck } from 'react-icons/bs';
-import { themeColors } from '@/static/ts/theme';
+// import { themeColors } from '@/static/ts/theme';
+
+const themeColors = [
+    {
+        name: 'primary-theme',
+        color: '#BD1E51',
+    },
+    {
+        name: 'secondary-theme',
+        color: '#F1B814',
+    },
+    {
+        name: 'offset-theme',
+        color: '#490B3D',
+    },
+    // {
+    //     name: 'info-theme',
+    //     color: '#9CF6FB',
+    // },
+    // {
+    //     name: 'success-theme',
+    //     color: '#BCFD4C',
+    // },
+    // {
+    //     name: 'light-alt-theme',
+    //     color: '#FDF5DF',
+    // },
+    {
+        name: 'dark-alt-theme',
+        color: '#1A2238',
+    },
+];
 
 const ThemeSettings = () => {
-    const { setColor, setMode, currentMode, currentColor } = useUIContext();
+    // Hydration Mismatch occurring here
+    const { setColor, setMode, currentMode } = useUIContext();
 
     return (
         <div className="bg-inherit w-full h-auto">
-            {/* Theme options */}
-            <div className="flex-col p-4">
-                <div className="mt-4">
+            <div className="flex-col">
+                <div className="flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-slate-300/[0.5]  m-2">
                     <input
                         type="radio"
                         id="light"
@@ -27,7 +57,7 @@ const ThemeSettings = () => {
                         Light
                     </label>
                 </div>
-                <div className="mt-4">
+                <div className="flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-slate-300/[0.5] m-2">
                     <input
                         type="radio"
                         id="dark"
@@ -47,7 +77,7 @@ const ThemeSettings = () => {
             </div>
             <div className="flex-col border-t-1 border-color p-4">
                 <div className="flex gap-2">
-                    {themeColors.map((item, index) => (
+                    {themeColors.map((item) => (
                         <div
                             key={item.name}
                             className="relative mt-2 cursor-pointer flex gap-5 items-center"

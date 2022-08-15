@@ -92,10 +92,11 @@ const Sidebar = (props: SidebarProps) => {
                         <div className="mt-10">
                             <p className="text-gray-400 m-3 mt-4 uppercase">
                                 Theme Settings
-                                <div className="container">
-                                    <ThemeSettings />
-                                </div>
                             </p>
+
+                            <div>
+                                <ThemeSettings />
+                            </div>
                         </div>
                     </div>
                 </>

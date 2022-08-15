@@ -52,16 +52,23 @@ export function UIContextProvider(props: ContextProps) {
             ? setCurrentMode('light')
             : setCurrentMode(e.currentTarget.value);
 
-        // use local storage to store mode
-        localStorage.setItem('themeMode', e.currentTarget.value);
+        const isSSR = typeof window !== 'undefined' ? true : false;
+
+        if (!isSSR) {
+            // use local storage to store mode
+            localStorage.setItem('themeMode', e.currentTarget.value);
+        }
         setThemeSettingsOpen(false);
     };
 
     const setColor = (color: string) => {
         color === null ? setCurrentColor('#BD1E51') : setCurrentColor(color);
 
-        // use local storage to store mode
-        localStorage.setItem('colorMode', color);
+        const isSSR = typeof window !== 'undefined' ? true : false;
+        if (!isSSR) {
+            // use local storage to store mode
+            localStorage.setItem('colorMode', color);
+        }
 
         // close theme settings after choosing theme color
         setThemeSettingsOpen(false);

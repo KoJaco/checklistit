@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect, useEffect } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { useUIContext } from '@/contexts/UIContextProvider';
 
@@ -43,7 +43,7 @@ const Navbar = () => {
         handleResize();
 
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    });
 
     useEffect(() => {
         // check screen size for active menu set
@@ -52,7 +52,7 @@ const Navbar = () => {
         } else {
             setActiveMenu(true);
         }
-    }, [screenSize]);
+    }, [screenSize, setActiveMenu]);
 
     return (
         <div className="flex justify-between md:mx-6 p-2 relative">
@@ -63,16 +63,7 @@ const Navbar = () => {
                 icon={<AiOutlineMenu />}
             />
 
-            <div className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg">
-                <div className="rounded-full"></div>
-
-                <p>
-                    <span className="text-gray-400 text-14">Hi, </span>{' '}
-                    <span className="text-gray-400 font-bold ml-1 text-14">
-                        Fucker
-                    </span>
-                </p>
-            </div>
+            <div className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray hover:text-gray-400 rounded-lg"></div>
         </div>
     );
 };
