@@ -9,8 +9,6 @@ type BaseLayoutProps = {
 const BaseLayout = ({ children }: BaseLayoutProps) => {
     const { currentMode, activeMenu } = useUIContext();
 
-    console.log(activeMenu);
-
     return (
         <div className={currentMode === 'dark' ? 'dark' : ''}>
             <div className="flex relative dark:bg-main-dark-bg">

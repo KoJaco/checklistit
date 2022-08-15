@@ -5,6 +5,7 @@ import { BsListCheck } from 'react-icons/bs';
 import { SiShopware } from 'react-icons/si';
 import { MdOutlineCancel } from 'react-icons/md';
 
+import ThemeSettings from '@/components/themeSettings/ThemeSettings';
 import { useUIContext } from '@/contexts/UIContextProvider';
 
 type SidebarProps = {};
@@ -71,7 +72,7 @@ const Sidebar = (props: SidebarProps) => {
                                     }}
                                     className={
                                         currentRoute === '/'
-                                            ? 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md m-2 text-gray-50'
+                                            ? 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md m-2 text-gray-50 drop-shadow-md'
                                             : 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2'
                                     }
                                     onClick={handleCloseSidebar}
@@ -83,14 +84,17 @@ const Sidebar = (props: SidebarProps) => {
                                 </a>
                             </Link>
                         </div>
-                        <div>
+                        <div className="mt-10">
                             <p className="text-gray-400 m-3 mt-4 uppercase">
                                 Folders
                             </p>
                         </div>
-                        <div>
+                        <div className="mt-10">
                             <p className="text-gray-400 m-3 mt-4 uppercase">
                                 Theme Settings
+                                <div className="container">
+                                    <ThemeSettings />
+                                </div>
                             </p>
                         </div>
                     </div>
