@@ -1,0 +1,89 @@
+    const onDragStart = (e: DragEvent & { dataTransfer?: DataTransfer }) => {
+        // remove default drag ghost
+        e.dataTransfer.effectAllowed = 'move';
+        // @ts-ignore
+
+        e.dataTransfer.setDragImage(e.target, 50000, 50000);
+
+        // custom drag ghost
+        // @ts-ignore
+
+        let ghostNode = e.target?.cloneNode(true);
+
+        ghostNode.style.position = 'absolute';
+
+        // show ghost add mouse pointer position
+        // @ts-ignore
+
+        ghostNode.style.top = e.pageY - e.target?.offsetHeight / 2 + 'px';
+        // @ts-ignore
+
+        ghostNode.style.left = e.pageX - e.target?.offsetWidth / 2 + 'px';
+
+        // add width height to ghost node
+        // @ts-ignore
+
+        ghostNode.style.height = e.target?.offsetHeight + 'px';
+        // @ts-ignore
+
+        ghostNode.style.width = e.target?.offsetWidth + 'px';
+
+        // add some style
+        ghostNode.style.opacity = '0.8';
+        ghostNode.style.pointerEvents = 'none';
+
+        // add id
+        ghostNode.id = 'ghostNode';
+
+        document.body.prepend(ghostNode);
+
+        // identify selected item
+        // @ts-ignore
+
+        itemRef.current.classList.add('dragstart');
+
+        if (props.onDragStart) {
+            props.onDragStart(props.index);
+        }
+    };
+
+    // event when dragging
+    const onDrag = (e: DragEvent) => {
+        // move ghost node with mouse
+        let ghostNode: HTMLElement | null =
+            document.querySelector('#ghostNode');
+        // @ts-ignore
+        ghostNode.style.top = e.pageY - e.target?.offsetHeight / 2 + 'px';
+        // @ts-ignore
+        ghostNode.style.left = e.pageX - e.target?.offsetWidth / 2 + 'px';
+    };
+
+    // event when drag end
+    const onDragEnd = () => {
+        // remove ghost node
+        document.querySelector('#ghostNode')?.remove();
+        // remove selected item style
+        // @ts-ignore
+        itemRef.current?.classList.remove('dragstart');
+    };
+
+    // event when drag over item
+    // @ts-ignore
+
+    const onDragEnter = () => itemRef.current?.classList.add('dragover');
+
+    // event when drag leave item
+    // @ts-ignore
+
+    const onDragLeave = () => itemRef.current?.classList.remove('dragover');
+
+    // add event for item can drop
+    const onDragOver = (e: Event) => e.preventDefault();
+
+    // event when drop
+    const onDrop = (index: number) => {
+        // @ts-ignore
+
+        itemRef.current.classList.remove('dragover');
+        props.onDrop(props.index);
+    };

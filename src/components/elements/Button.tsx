@@ -1,4 +1,5 @@
 type ButtonProps = {
+    backgroundColor: string;
     buttonStyling?: string;
     onClick?: () => void;
     children?: JSX.Element;
@@ -18,7 +19,7 @@ const Button = (props: ButtonProps) => {
             className={customButtonStyles}
             onClick={props.onClick}
             // Will come from contextProvider.
-            style={{ backgroundColor: currentThemeColor }}
+            style={{ backgroundColor: props.backgroundColor }}
         >
             {props.children}
         </button>

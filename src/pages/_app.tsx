@@ -4,13 +4,17 @@ import type { AppRouter } from '../server/router';
 import type { AppType } from 'next/dist/shared/lib/utils';
 import superjson from 'superjson';
 import '../styles/globals.css';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { UIContextProvider } from '@/contexts/UIContextProvider';
 
 const MyApp: AppType = ({ Component, pageProps }) => {
     return (
         <UIContextProvider>
-            <Component {...pageProps} />
+            <DndProvider backend={HTML5Backend}>
+                <Component {...pageProps} />
+            </DndProvider>
         </UIContextProvider>
     );
 };
