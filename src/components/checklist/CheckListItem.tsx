@@ -55,7 +55,7 @@ const CheckListItem = ({ id, ...props }: CheckListItemProps) => {
         <li
             ref={(node) => drag(drop(node))}
             style={{ opacity: opacity }}
-            className="rounded-lg drop-shadow-sm bg-slate-200 p-2"
+            className="rounded-md shadow bg-gray-50 dark:bg-main-dark-bg dark:text-gray-50 p-2 m-2 list-none"
         >
             {props.children}
         </li>

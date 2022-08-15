@@ -89,7 +89,7 @@ const CheckList = (props: CheckListColumnProps) => {
     return (
         <div className="container">
             <div className="flex flex-row justify-between gap-x-5 h-auto">
-                <div className="flex flex-col p-2 w-full rounded-md bg-slate-100 shadow-md">
+                <div className="flex flex-col p-2 w-full rounded-md bg-[#FDF5DF] dark:bg-secondary-dark-bg shadow-md">
                     <ul ref={drop} className="w-full"></ul>
                     <Button
                         backgroundColor={`#FFFFFF00`}
@@ -113,6 +113,7 @@ const CheckList = (props: CheckListColumnProps) => {
                         </CheckListItem>
                     ))}
                 </div>
+
                 {/* <div className="flex flex-col w-full p-2 rounded-md bg-slate-100 shadow-md">
                     <ul>
                         <Draggable axis="y" bounds="parent">
