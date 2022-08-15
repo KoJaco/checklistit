@@ -1,205 +1,93 @@
-// File for controlling global state of components.
+// UI Context and Provider, for theming, sidebar, etc.
 
-import React, {
-    createContext,
-    ReactNode,
-    useContext,
-    useMemo,
-    useReducer,
-} from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
-// Main context for quick-notes
-const CheckListIt = createContext<any>(null);
-
-// Set custom name for the context which is invisible on react dev tools.
-CheckListIt.displayName = 'CheckListItUiContext';
-
-// types
-interface StateTypes {
-    miniSideNav: boolean;
-    transparentSideNav: boolean;
-    whiteSideNav: boolean;
-    currentColor: // primary
-    | '#BD1E51'
-        // secondary
-        | '#F1B814'
-        // offset
-        | '#490B3D'
-        // info
-        | '#9CF6FB'
-        // success
-        | '#BCFD4C'
-        // light alt
-        | '#FDF5DF'
-        // error
-        | '#1A2238';
+type UIContextType = {
     activeMenu: boolean;
-    openUISettings: boolean;
-    direction: 'ltr' | 'rtl';
-    layout: 'dashboard' | 'page';
-    darkMode: boolean;
-}
+    setActiveMenu: (isActive: boolean) => void;
+    screenSize: undefined | number;
+    setScreenSize: (screenSize: undefined | number) => void;
+    currentColor: string;
+    setColor: (color: string) => void;
+    setCurrentColor: (color: string) => void;
+    currentMode: string;
+    setMode: (e: React.FormEvent<HTMLInputElement>) => void;
+    setCurrentMode: (mode: string) => void;
+    themeSettingsOpen: boolean;
+    setThemeSettingsOpen: (themeSettingsOpen: boolean) => void;
+};
 
-interface ActionTypes {
-    type:
-        | 'MINI_SIDENAV'
-        | 'TRANSPARENT_SIDENAV'
-        | 'WHITE_SIDENAV'
-        | 'CURRENT_COLOR'
-        | 'ACTIVE_MENU'
-        | 'OPEN_UI_SETTINGS'
-        | 'DIRECTION'
-        | 'LAYOUT'
-        | 'DARK_MODE';
-    value: any;
-}
+const UIContextDefaultValues: UIContextType = {
+    activeMenu: false,
+    setActiveMenu: (activeMenu) => {},
+    screenSize: undefined,
+    setScreenSize: (screenSize) => {},
+    currentColor: '#03C9D7',
+    setCurrentColor: (color) => {},
+    setColor: (color) => {},
+    currentMode: 'light',
+    setMode: (e) => {},
+    setCurrentMode: (mode) => {},
+    themeSettingsOpen: false,
+    setThemeSettingsOpen: (themeSettingsOpen) => {},
+};
 
-// State reducer
-function reducer(state: StateTypes, action: ActionTypes) {
-    switch (action.type) {
-        case 'MINI_SIDENAV': {
-            return { ...state, miniSideNav: action.value };
-        }
-        case 'TRANSPARENT_SIDENAV': {
-            return { ...state, transparentSideNav: action.value };
-        }
-        case 'WHITE_SIDENAV': {
-            return { ...state, whiteSideNav: action.value };
-        }
-        case 'CURRENT_COLOR': {
-            return { ...state, currentColor: action.value };
-        }
-        case 'ACTIVE_MENU': {
-            return { ...state, activeMenu: action.value };
-        }
-        case 'OPEN_UI_SETTINGS': {
-            return { ...state, openUISettings: action.value };
-        }
-        case 'DIRECTION': {
-            return { ...state, direction: action.value };
-        }
-        case 'LAYOUT': {
-            return { ...state, layout: action.value };
-        }
+const UIContext = createContext<UIContextType>(UIContextDefaultValues);
 
-        case 'DARK_MODE': {
-            return { ...state, darkMode: action.value };
-        }
-        default: {
-            throw new Error(`Unhandled action type: ${action.type}`);
-        }
-    }
-}
+type ContextProps = {
+    children: React.ReactNode;
+};
 
-function UIContextProvider({ children }: { children: ReactNode }): JSX.Element {
-    const initialState: StateTypes = {
-        miniSideNav: false,
-        transparentSideNav: false,
-        whiteSideNav: false,
-        currentColor: '#BD1E51',
-        activeMenu: false,
-        openUISettings: false,
-        direction: 'ltr',
-        layout: 'dashboard',
-        darkMode: true,
+export function UIContextProvider(props: ContextProps) {
+    const [activeMenu, setActiveMenu] = useState<boolean>(true);
+    const [screenSize, setScreenSize] = useState<undefined | number>(undefined);
+    const [currentColor, setCurrentColor] = useState<string>('#03C9D7');
+    const [currentMode, setCurrentMode] = useState<string>('light');
+    const [themeSettingsOpen, setThemeSettingsOpen] = useState<boolean>(false);
+
+    // Event after input element clicked or toggled, use currentTarget for form event
+    const setMode = (e: React.FormEvent<HTMLInputElement>) => {
+        // catch null case, reset mode to default
+        e.target === null
+            ? setCurrentMode('light')
+            : setCurrentMode(e.currentTarget.value);
+
+        // use local storage to store mode
+        localStorage.setItem('themeMode', e.currentTarget.value);
+        setThemeSettingsOpen(false);
     };
 
-    const [controller, dispatch] = useReducer(reducer, initialState);
+    const setColor = (color: string) => {
+        color === null ? setCurrentColor('#03C9D7') : setCurrentColor(color);
 
-    const value = useMemo(() => [controller, dispatch], [controller, dispatch]);
+        // use local storage to store mode
+        localStorage.setItem('colorMode', color);
 
+        // close theme settings after choosing theme color
+        setThemeSettingsOpen(false);
+    };
+
+    const value = {
+        activeMenu,
+        setActiveMenu,
+        screenSize,
+        setScreenSize,
+        currentColor,
+        setCurrentColor,
+        currentMode,
+        setCurrentMode,
+        setMode,
+        setColor,
+        themeSettingsOpen,
+        setThemeSettingsOpen,
+    };
     return (
-        <CheckListIt.Provider value={value}>{children}</CheckListIt.Provider>
+        <>
+            <UIContext.Provider value={value}>
+                {props.children}
+            </UIContext.Provider>
+        </>
     );
 }
 
-// custom hook for using context
-function useUIContext() {
-    const context = useContext(CheckListIt);
-
-    if (!context) {
-        throw new Error(
-            'useCheckListItController should be used inside of CheckListItControllerProvider'
-        );
-    }
-
-    return context;
-}
-
-// context module functions
-
-const setMiniSideNav = (
-    dispatch: (arg: { type: 'MINI_SIDENAV'; value: boolean }) => void,
-    value: boolean
-) => dispatch({ type: 'MINI_SIDENAV', value });
-
-const setTransparentSideNav = (
-    dispatch: (arg: { type: 'TRANSPARENT_SIDENAV'; value: boolean }) => void,
-    value: boolean
-) => dispatch({ type: 'TRANSPARENT_SIDENAV', value });
-
-const setWhiteSideNav = (
-    dispatch: (arg: { type: 'WHITE_SIDENAV'; value: boolean }) => void,
-    value: boolean
-) => dispatch({ type: 'WHITE_SIDENAV', value });
-
-const setCurrentColor = (
-    dispatch: (arg: {
-        type: 'CURRENT_COLOR';
-        value:
-            | '#BD1E51'
-            | '#F1B814'
-            | '#490B3D'
-            | '#9CF6FB'
-            | '#BCFD4C'
-            | '#FDF5DF'
-            | '#1A2238';
-    }) => void,
-    value:
-        | '#BD1E51'
-        | '#F1B814'
-        | '#490B3D'
-        | '#9CF6FB'
-        | '#BCFD4C'
-        | '#FDF5DF'
-        | '#1A2238'
-) => dispatch({ type: 'CURRENT_COLOR', value });
-
-const setActiveMenu = (
-    dispatch: (arg: { type: 'ACTIVE_MENU'; value: boolean }) => void,
-    value: boolean
-) => dispatch({ type: 'ACTIVE_MENU', value });
-
-const setOpenUISettings = (
-    dispatch: (arg: { type: 'OPEN_UI_SETTINGS'; value: boolean }) => void,
-    value: boolean
-) => dispatch({ type: 'OPEN_UI_SETTINGS', value });
-
-const setDirection = (
-    dispatch: (arg: { type: 'DIRECTION'; value: 'ltr' | 'rtl' }) => void,
-    value: 'ltr' | 'rtl'
-) => dispatch({ type: 'DIRECTION', value });
-
-const setLayout = (
-    dispatch: (arg: { type: 'LAYOUT'; value: 'dashboard' | 'page' }) => void,
-    value: 'dashboard' | 'page'
-) => dispatch({ type: 'LAYOUT', value });
-
-const setDarkMode = (
-    dispatch: (arg: { type: 'DARK_MODE'; value: boolean }) => void,
-    value: boolean
-) => dispatch({ type: 'DARK_MODE', value });
-
-export {
-    UIContextProvider,
-    useUIContext,
-    setMiniSideNav,
-    setTransparentSideNav,
-    setWhiteSideNav,
-    setCurrentColor,
-    setActiveMenu,
-    setOpenUISettings,
-    setDirection,
-    setLayout,
-    setDarkMode,
-};
+export const useUIContext = () => useContext(UIContext);
