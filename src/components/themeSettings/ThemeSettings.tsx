@@ -1,6 +1,7 @@
 import React from 'react';
 import { useUIContext } from '@/contexts/UIContextProvider';
 // import { themeColors } from '@/static/ts/theme';
+import Toggle from '@/components/elements/Toggle';
 
 const themeColors = [
     {
@@ -34,48 +35,28 @@ const themeColors = [
 ];
 
 const ThemeSettings = () => {
-    // Hydration Mismatch occurring here
     const { setColor, setMode, currentMode } = useUIContext();
 
     return (
         <div className="bg-inherit w-full h-auto">
-            <div className="flex-col">
-                <div className="flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-slate-300/[0.5]  m-2">
-                    <input
-                        type="radio"
-                        id="light"
-                        name="theme"
-                        value="light"
-                        className="cursor-pointer"
-                        onChange={setMode}
-                        checked={currentMode === 'light'}
-                    />
-                    <label
-                        htmlFor="light"
-                        className="ml-2 text-md cursor-pointer"
-                    >
-                        Light
+            <div className="flex-col p-4">
+                <div className="form-check form-switch">
+                    <label className="relative flex justify-between items-center group p-2 text-md">
+                        <span className="text-gray-700 dark:text-gray-200">
+                            Light/Dark
+                        </span>
+                        <input
+                            id={currentMode}
+                            type="checkbox"
+                            className="absolute left-1/2 -translate-x-1/2 w-full h-full peer appearance-none rounded-md"
+                            checked={currentMode === 'light' ? false : true}
+                            onChange={setMode}
+                            value={currentMode === 'light' ? 'dark' : 'light'}
+                        />
+                        <span className="cursor-pointer w-14 h-8 flex items-center flex-shrink-0 p-0.5 bg-slate-300 rounded-full duration-300 ease-in-out peer-checked:bg-green-400 after:w-7 after:h-7 after:bg-white after:rounded-full after:shadow-md after:duration-300 peer-checked:after:translate-x-6 group-hover:scale-105 group-hover:drop-shadow-md"></span>
                     </label>
                 </div>
-                <div className="flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-slate-300/[0.5] m-2">
-                    <input
-                        type="radio"
-                        id="dark"
-                        name="theme"
-                        value="dark"
-                        className="cursor-pointer"
-                        onChange={setMode}
-                        checked={currentMode === 'dark'}
-                    />
-                    <label
-                        htmlFor="dark"
-                        className="ml-2 text-md cursor-pointer"
-                    >
-                        Dark
-                    </label>
-                </div>
-            </div>
-            <div className="flex-col border-t-1 border-color p-4">
+
                 <div className="flex gap-2">
                     {themeColors.map((item) => (
                         <div
