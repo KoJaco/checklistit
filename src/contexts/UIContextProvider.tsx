@@ -41,7 +41,7 @@ type ContextProps = {
 export function UIContextProvider(props: ContextProps) {
     const [activeMenu, setActiveMenu] = useState<boolean>(true);
     const [screenSize, setScreenSize] = useState<undefined | number>(undefined);
-    const [currentColor, setCurrentColor] = useState<string>('#03C9D7');
+    const [currentColor, setCurrentColor] = useState<string>('#BD1E51');
     const [currentMode, setCurrentMode] = useState<string>('light');
     const [themeSettingsOpen, setThemeSettingsOpen] = useState<boolean>(false);
 
@@ -58,7 +58,7 @@ export function UIContextProvider(props: ContextProps) {
     };
 
     const setColor = (color: string) => {
-        color === null ? setCurrentColor('#03C9D7') : setCurrentColor(color);
+        color === null ? setCurrentColor('#BD1E51') : setCurrentColor(color);
 
         // use local storage to store mode
         localStorage.setItem('colorMode', color);

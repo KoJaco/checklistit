@@ -40,10 +40,11 @@ const Sidebar = (props: SidebarProps) => {
                     <div className="flex justify-between items-center">
                         <Link href="/">
                             <div
-                                className="cursor-pointer items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-gray-900"
+                                className="cursor-pointer items-center gap-3 ml-3 mt-4 flex text-xl font-medium tracking-tight dark:text-white text-slate-600"
                                 onClick={() => handleCloseSidebar}
                             >
-                                <SiShopware /> <span>next dashboard</span>
+                                <SiShopware />
+                                <span>CheckList-It</span>
                             </div>
                         </Link>
 
@@ -58,7 +59,7 @@ const Sidebar = (props: SidebarProps) => {
                     <div className="mt-10">
                         <div>
                             <p className="text-gray-400 m-3 mt-4 uppercase">
-                                Some title
+                                Most Recent
                             </p>
                             <Link href="/" passHref={true}>
                                 <a
@@ -77,10 +78,20 @@ const Sidebar = (props: SidebarProps) => {
                                 >
                                     <BsListCheck />
                                     <span className="capitalize">
-                                        Check Lists
+                                        Check List 1
                                     </span>
                                 </a>
                             </Link>
+                        </div>
+                        <div>
+                            <p className="text-gray-400 m-3 mt-4 uppercase">
+                                Folders
+                            </p>
+                        </div>
+                        <div>
+                            <p className="text-gray-400 m-3 mt-4 uppercase">
+                                Theme Settings
+                            </p>
                         </div>
                     </div>
                 </>
