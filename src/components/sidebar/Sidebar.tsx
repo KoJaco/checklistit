@@ -60,7 +60,7 @@ const Sidebar = (props: SidebarProps) => {
                     <div className="mt-10">
                         <div>
                             <p className="text-gray-400 m-3 mt-4 uppercase">
-                                Most Recent
+                                Current Board
                             </p>
                             <Link href="/" passHref={true}>
                                 <a
@@ -79,14 +79,14 @@ const Sidebar = (props: SidebarProps) => {
                                 >
                                     <BsListCheck />
                                     <span className="capitalize">
-                                        Check List 1
+                                        Board Title
                                     </span>
                                 </a>
                             </Link>
                         </div>
                         <div className="mt-10">
                             <p className="text-gray-400 m-3 mt-4 uppercase">
-                                Folders
+                                All Boards
                             </p>
                         </div>
                         <div className="mt-10">

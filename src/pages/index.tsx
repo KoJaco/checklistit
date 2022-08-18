@@ -3,12 +3,11 @@ import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { trpc } from '@/core/utils/trpc';
 import BaseLayout from '@/layouts/BaseLayout';
-import CheckList from '@/components/checklist/CheckList';
+import KanbanBoard from '@/components/kanban/KanbanBoard';
 
-const DynamicCheckList = dynamic(
-    () => import('@/components/checklist/CheckList'),
-    { ssr: false }
-);
+// const DynamicCheckList = dynamic(() => import('@/components/kanban/Column'), {
+//     ssr: false,
+// });
 
 const initialData = {
     tasks: {
@@ -40,20 +39,14 @@ const initialData = {
     columnOrder: ['column-1', 'column-2', 'column-3'],
 };
 
-type TSourceCheckList = {
-    id: string;
-    title: string;
-    taskIds: number[];
-};
-
 const Home: NextPage = () => {
     return (
         <>
             <BaseLayout>
                 <main className="container mx-auto flex flex-col items-center justify-center h-screen p-10 dark:bg-main-dark-bg">
                     <div className="w-full h-auto mt-20 p-5 ">
-                        {/* Checklist component */}
-                        <CheckList />
+                        {/* Kanban component */}
+                        <KanbanBoard />
                     </div>
                 </main>
             </BaseLayout>

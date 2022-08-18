@@ -1,9 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { MdOutlineVerticalDistribute } from 'react-icons/md';
 import { ItemTypes } from './types';
 
-type CheckListItemProps = {
+type ColumnItemProps = {
     children: JSX.Element;
     draggable: boolean;
     id: string;
@@ -17,8 +16,7 @@ interface Item {
     originalIndex: number;
 }
 
-const CheckListItem = ({ id, ...props }: CheckListItemProps) => {
-    const itemRef = useRef(null);
+const ColumnItem = ({ id, ...props }: ColumnItemProps) => {
     const originalIndex = props.findItem(id).index;
     const [{ isDragging }, drag] = useDrag(
         () => ({
@@ -62,4 +60,4 @@ const CheckListItem = ({ id, ...props }: CheckListItemProps) => {
     );
 };
 
-export default CheckListItem;
+export default ColumnItem;
