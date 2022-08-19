@@ -1,21 +1,25 @@
-import { COLUMN_ITEM, ROW, COLUMN } from './constants';
+import { COLUMN_ITEM, ROW, COLUMN } from '@/core/constants/dragDropConsts';
 
 const initialData = {
     layout: [
         {
             type: ROW,
             id: 'row0',
+            depth: 1,
             children: [
                 {
                     type: COLUMN,
                     id: 'column0',
+                    depth: 2,
                     children: [
                         {
                             type: COLUMN_ITEM,
+                            depth: 3,
                             id: 'columnItem0',
                         },
                         {
                             type: COLUMN_ITEM,
+                            depth: 3,
                             id: 'columnItem1',
                         },
                     ],
@@ -23,9 +27,13 @@ const initialData = {
                 {
                     type: COLUMN,
                     id: 'column1',
+                    depth: 2,
+
                     children: [
                         {
                             type: COLUMN_ITEM,
+                            depth: 3,
+
                             id: 'columnItem2',
                         },
                     ],
@@ -35,21 +43,28 @@ const initialData = {
         {
             type: ROW,
             id: 'row1',
+            depth: 1,
             children: [
                 {
                     type: COLUMN,
                     id: 'column2',
+                    depth: 2,
                     children: [
                         {
                             type: COLUMN_ITEM,
+                            depth: 3,
+
                             id: 'columnItem3',
                         },
                         {
                             type: COLUMN_ITEM,
+                            depth: 3,
                             id: 'columnItem0',
                         },
                         {
                             type: COLUMN_ITEM,
+                            depth: 3,
+
                             id: 'columnItem2',
                         },
                     ],

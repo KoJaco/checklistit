@@ -6,12 +6,20 @@ import { Task } from './types';
 import { generateRandomString } from '@/core/utils/functions';
 import { ItemTypes } from './types';
 import { useDrag, useDrop } from 'react-dnd';
+import {
+    TColumnItem,
+    TColumnItemComponent,
+    TColumn,
+} from '@/core/types/dragDropTypes';
 
 import DropZone from '@/components/dropZone/DropZone';
 import ColumnItem from './ColumnItem';
 
 type ColumnProps = {
     acceptedDragSources: string[];
+    columnItem?: TColumnItem[];
+    columnItems?: TColumnItemComponent[];
+
     lastDroppedItem?: any;
     children?: JSX.Element;
     currentTaskID?: string;
@@ -87,6 +95,15 @@ const Column = (props: ColumnProps) => {
     } else if (canDrop) {
         bgColor = 'darkkhaki';
     }
+
+    // const renderColumnItem = (
+    //     columnItem: TColumnItemComponent,
+    //     currentPath: string
+    // ) => {
+    //     return (
+    //         <ColumnItem draggable={true} data={columnItem} path={currentPath} />
+    //     );
+    // };
 
     // https://tailwindui.com/components/application-ui/forms/textareas
     return (

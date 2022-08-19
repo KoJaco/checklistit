@@ -1,6 +1,13 @@
 import React, { useState, useMemo } from 'react';
 
 import { COLUMN_ITEM } from '@/core/constants/dragDropConsts';
+import {
+    TLayout,
+    TRow,
+    TColumn,
+    TColumnItem,
+    TColumnItemComponent,
+} from '@/core/types/dragDropTypes';
 import Column from './Column';
 
 type Item =
@@ -18,6 +25,12 @@ type ColumnTemplateItemComponent = {
     content: string;
 };
 interface KanbanBoardProps {
+    // layout: TLayout;
+    // rows: TRow[];
+    // columns: TColumn[];
+    // columnItems: TColumnItem[];
+    // columnItemComponents: TColumnItemComponent[];
+
     path?: string;
     childrenCount?: number;
     columnTemplateItem?: {
@@ -25,7 +38,6 @@ interface KanbanBoardProps {
         type: string;
         component: ColumnTemplateItemComponent;
     };
-    layout?: Children;
 }
 
 const KanbanBoard = (props: KanbanBoardProps) => {
