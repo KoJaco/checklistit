@@ -83,8 +83,8 @@ const ColumnItem = ({
 
     return (
         <li
-            ref={ref}
-            // ref={(node) => drag(drop(node))}
+            // ref={ref}
+            ref={(node) => drag(drop(node))}
             style={{ opacity: opacity }}
             className="p-2"
         >
