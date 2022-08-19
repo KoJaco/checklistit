@@ -8,7 +8,7 @@ import { MdOutlineCancel } from 'react-icons/md';
 import ThemeSettings from '@/components/themeSettings/ThemeSettings';
 import { useUIContext } from '@/contexts/UIContextProvider';
 import ColumnTemplate from '@/components/columnTemplate/ColumnTemplate';
-import { COLUMN_TEMPLATE_ITEMS } from '@/static/ts/constants';
+import { COLUMN_TEMPLATE_ITEMS } from '@/core/constants/dragDropConsts';
 
 type SidebarProps = {};
 

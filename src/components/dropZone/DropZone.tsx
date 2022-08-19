@@ -6,7 +6,7 @@ import {
     COLUMN_TEMPLATE_ITEM,
     ROW,
     COLUMN,
-} from '@/static/ts/constants';
+} from '@/core/constants/dragDropConsts';
 
 const ACCEPTS = [COLUMN_TEMPLATE_ITEM, COLUMN_ITEM, ROW, COLUMN];
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { AiOutlinePaperClip } from 'react-icons/ai';
 import { MdDragIndicator } from 'react-icons/md';
-import { COLUMN_ITEM, COLUMN } from '@/static/ts/constants';
+import { COLUMN_ITEM, COLUMN } from '@/core/constants/dragDropConsts';
 
 const DROP_TARGETS = [COLUMN, COLUMN_ITEM];
 

@@ -1,5 +1,5 @@
 import shortid from 'shortid';
-import { ROW, COLUMN, COLUMN_ITEM } from '@/static/ts/constants';
+import { ROW, COLUMN, COLUMN_ITEM } from '@/core/constants/dragDropConsts';
 
 type Item =
     | {

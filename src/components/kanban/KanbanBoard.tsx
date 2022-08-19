@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 
-import { COLUMN_ITEM } from '@/static/ts/constants';
+import { COLUMN_ITEM } from '@/core/constants/dragDropConsts';
 import Column from './Column';
 
 type Item =
@@ -18,7 +18,7 @@ type ColumnTemplateItemComponent = {
     content: string;
 };
 interface KanbanBoardProps {
-    path: string;
+    path?: string;
     childrenCount?: number;
     columnTemplateItem?: {
         id: string;
