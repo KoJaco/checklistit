@@ -1,4 +1,4 @@
-import { COMPONENT, ROW, COLUMN } from './constants';
+import { COLUMN_ITEM, ROW, COLUMN } from './constants';
 
 const initialData = {
     layout: [
@@ -11,12 +11,12 @@ const initialData = {
                     id: 'column0',
                     children: [
                         {
-                            type: COMPONENT,
-                            id: 'component0',
+                            type: COLUMN_ITEM,
+                            id: 'columnItem0',
                         },
                         {
-                            type: COMPONENT,
-                            id: 'component1',
+                            type: COLUMN_ITEM,
+                            id: 'columnItem1',
                         },
                     ],
                 },
@@ -25,8 +25,8 @@ const initialData = {
                     id: 'column1',
                     children: [
                         {
-                            type: COMPONENT,
-                            id: 'component2',
+                            type: COLUMN_ITEM,
+                            id: 'columnItem2',
                         },
                     ],
                 },
@@ -41,28 +41,48 @@ const initialData = {
                     id: 'column2',
                     children: [
                         {
-                            type: COMPONENT,
-                            id: 'component3',
+                            type: COLUMN_ITEM,
+                            id: 'columnItem3',
                         },
                         {
-                            type: COMPONENT,
-                            id: 'component0',
+                            type: COLUMN_ITEM,
+                            id: 'columnItem0',
                         },
                         {
-                            type: COMPONENT,
-                            id: 'component2',
+                            type: COLUMN_ITEM,
+                            id: 'columnItem2',
                         },
                     ],
                 },
             ],
         },
     ],
-    components: {
-        component0: { id: 'component0', type: 'input', content: 'Some input' },
-        component1: { id: 'component1', type: 'image', content: 'Some image' },
-        component2: { id: 'component2', type: 'email', content: 'Some email' },
-        component3: { id: 'component3', type: 'name', content: 'Some name' },
-        component4: { id: 'component4', type: 'phone', content: 'Some phone' },
+    columnItems: {
+        columnItem0: {
+            id: 'columnItem0',
+            title: 'My First Note',
+            content: 'Some random content description of, numero uno!',
+        },
+        columnItem1: {
+            id: 'columnItem1',
+            title: 'My 2nd Note',
+            content: 'I am just gonna so whatever I want here.',
+        },
+        columnItem2: {
+            id: 'columnItem2',
+            title: 'It would be awesome if I could get this done today.',
+            content: 'Some email',
+        },
+        columnItem3: {
+            id: 'columnItem3',
+            title: 'name',
+            content: 'What do you think of this?',
+        },
+        columnItem4: {
+            id: 'columnItem4',
+            title: 'My 4th descriptive title',
+            content: 'Hellloooooo there!!!!',
+        },
     },
 };
 

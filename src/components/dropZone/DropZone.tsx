@@ -2,13 +2,13 @@ import React from 'react';
 import clsx from 'clsx';
 import { useDrop, DropTargetMonitor } from 'react-dnd';
 import {
-    COMPONENT,
+    COLUMN_ITEM,
     COLUMN_TEMPLATE_ITEM,
     ROW,
     COLUMN,
 } from '@/static/ts/constants';
 
-const ACCEPTS = [COLUMN_TEMPLATE_ITEM, COMPONENT, ROW, COLUMN];
+const ACCEPTS = [COLUMN_TEMPLATE_ITEM, COLUMN_ITEM, ROW, COLUMN];
 
 type Item =
     | {

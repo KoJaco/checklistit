@@ -4,14 +4,15 @@ import shortid from 'shortid';
 export const COLUMN_TEMPLATE_ITEM = 'columnTemplateItem';
 export const ROW = 'row';
 export const COLUMN = 'column';
-export const COMPONENT = 'component';
+export const COLUMN_ITEM = 'columnItem';
+export const LIST_ITEM = 'listItem';
 
 export const COLUMN_TEMPLATE_ITEMS = [
     {
         // id: uuidv4(),
         id: shortid.generate(),
         type: COLUMN_TEMPLATE_ITEM,
-        component: {
+        column: {
             type: 'toDo',
             content: 'To Do List',
         },
@@ -19,7 +20,7 @@ export const COLUMN_TEMPLATE_ITEMS = [
     {
         id: shortid.generate(),
         type: COLUMN_TEMPLATE_ITEM,
-        component: {
+        column: {
             type: 'progress',
             content: 'In Progress',
         },
@@ -27,7 +28,7 @@ export const COLUMN_TEMPLATE_ITEMS = [
     {
         id: shortid.generate(),
         type: COLUMN_TEMPLATE_ITEM,
-        component: {
+        column: {
             type: 'completed',
             content: 'Done',
         },
@@ -35,7 +36,7 @@ export const COLUMN_TEMPLATE_ITEMS = [
     {
         id: shortid.generate(),
         type: COLUMN_TEMPLATE_ITEM,
-        component: {
+        column: {
             type: 'reminders',
             content: 'Remember these!',
         },

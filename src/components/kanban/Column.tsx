@@ -2,20 +2,24 @@ import React, { useRef, useState, useCallback, useMemo } from 'react';
 import Button from '@/components/elements/Button';
 import update from 'immutability-helper';
 import { useUIContext } from '@/contexts/UIContextProvider';
-import ColumnItem from './ColumnItem';
 import { Task } from './types';
 import { generateRandomString } from '@/core/utils/functions';
 import { ItemTypes } from './types';
-import { useDrop } from 'react-dnd';
+import { useDrag, useDrop } from 'react-dnd';
+
+import DropZone from '@/components/dropZone/DropZone';
+import ColumnItem from './ColumnItem';
 
 type ColumnProps = {
+    acceptedDragSources: string[];
+    lastDroppedItem?: any;
     children?: JSX.Element;
     currentTaskID?: string;
     tasks?: Task[];
     draggable?: boolean;
     index?: number;
     onDragStart?: Function;
-    onDrop?: Function;
+    onDrop?: (item: any) => void;
 };
 
 interface ColumnState {
@@ -35,22 +39,6 @@ const ITEMS = [
         id: 3,
         text: 'Write README',
     },
-    // {
-    //     id: 4,
-    //     text: 'Create some examples',
-    // },
-    // {
-    //     id: 5,
-    //     text: 'Spam in Twitter and IRC to promote it',
-    // },
-    // {
-    //     id: 6,
-    //     text: '???',
-    // },
-    // {
-    //     id: 7,
-    //     text: 'PROFIT',
-    // },
 ];
 
 const Column = (props: ColumnProps) => {
@@ -83,13 +71,32 @@ const Column = (props: ColumnProps) => {
         [findItem, items, setItems]
     );
 
-    const [, drop] = useDrop(() => ({ accept: ItemTypes.LIST_ITEM }));
+    const [{ isOver, canDrop }, drop] = useDrop({
+        accept: props.acceptedDragSources,
+        drop: props.onDrop,
+        collect: (monitor) => ({
+            isOver: monitor.isOver(),
+            canDrop: monitor.canDrop(),
+        }),
+    });
+
+    const isActive = isOver && canDrop;
+    let bgColor = '#222';
+    if (isActive) {
+        bgColor = 'darkgreen';
+    } else if (canDrop) {
+        bgColor = 'darkkhaki';
+    }
 
     // https://tailwindui.com/components/application-ui/forms/textareas
     return (
         <div className="container">
             <div className="flex flex-row justify-between gap-x-5 h-auto">
-                <div className="flex flex-col p-2 w-full rounded-md bg-[#FDF5DF] dark:bg-secondary-dark-bg shadow-md">
+                <div
+                    ref={drop}
+                    className="flex flex-col p-2 w-full rounded-md bg-[#FDF5DF] dark:bg-secondary-dark-bg shadow-md"
+                    style={{ backgroundColor: bgColor }}
+                >
                     <ul ref={drop} className="w-full">
                         {items.map((item) => (
                             <div key={item.id}>
@@ -99,6 +106,7 @@ const Column = (props: ColumnProps) => {
                                     moveItem={moveItem}
                                     findItem={findItem}
                                     draggable={true}
+                                    text={item.text}
                                 />
                             </div>
                         ))}

@@ -1,5 +1,5 @@
 import shortid from 'shortid';
-import { ROW, COLUMN, COMPONENT } from '@/static/ts/constants';
+import { ROW, COLUMN, COLUMN_ITEM } from '@/static/ts/constants';
 
 type Item =
     | {
@@ -204,7 +204,7 @@ export const handleMoveToDifferentParent = <T>(
         }
         case 2: {
             // moving component outside into a row which creates a column
-            if (item?.type === COMPONENT) {
+            if (item?.type === COLUMN_ITEM) {
                 newLayoutStructureItem = COLUMN_STRUCTURE;
             } else {
                 // moving column into existing row

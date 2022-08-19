@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 
+import { COLUMN_ITEM } from '@/static/ts/constants';
 import Column from './Column';
-// import ColumnItem from './ColumnItem';
 
 type Item =
     | {
@@ -31,7 +31,7 @@ interface KanbanBoardProps {
 const KanbanBoard = (props: KanbanBoardProps) => {
     return (
         <div>
-            <Column />
+            <Column acceptedDragSources={[COLUMN_ITEM]} />
         </div>
     );
 };

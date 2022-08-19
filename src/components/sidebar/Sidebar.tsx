@@ -7,8 +7,12 @@ import { MdOutlineCancel } from 'react-icons/md';
 
 import ThemeSettings from '@/components/themeSettings/ThemeSettings';
 import { useUIContext } from '@/contexts/UIContextProvider';
+import ColumnTemplate from '@/components/columnTemplate/ColumnTemplate';
+import { COLUMN_TEMPLATE_ITEMS } from '@/static/ts/constants';
 
 type SidebarProps = {};
+
+const columnTemplateItems = COLUMN_TEMPLATE_ITEMS;
 
 const Sidebar = (props: SidebarProps) => {
     const { activeMenu, setActiveMenu, screenSize, currentColor } =
@@ -94,6 +98,9 @@ const Sidebar = (props: SidebarProps) => {
                             <p className="text-gray-400 m-3 mt-4 uppercase">
                                 Column Templates
                             </p>
+                            {columnTemplateItems.map((item) => (
+                                <ColumnTemplate key={item.id} data={item} />
+                            ))}
                         </div>
                         <div className="mt-10">
                             <p className="text-gray-400 m-3 mt-4 uppercase">

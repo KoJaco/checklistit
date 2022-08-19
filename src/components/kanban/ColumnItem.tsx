@@ -1,58 +1,30 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { AiOutlinePaperClip } from 'react-icons/ai';
 import { MdDragIndicator } from 'react-icons/md';
-import { ItemTypes } from './types';
+import { COLUMN_ITEM, COLUMN } from '@/static/ts/constants';
 
-import { COMPONENT } from '@/static/ts/constants';
-
-// type ColumnItemProps = {
-//     children: JSX.Element;
-//     draggable: boolean;
-//     id: string;
-//     text: string;
-//     findItem: (id: string) => { index: number };
-//     moveItem: (id: string, to: number) => void;
-// };
-
-type Data = {
-    type: string;
-    id: string;
-    children?: Data[];
-};
-
-type Component = {
-    type: string;
-    content: string;
-};
+const DROP_TARGETS = [COLUMN, COLUMN_ITEM];
 
 type ColumnItemProps = {
-    data?: Data;
-    path?: string;
-    components?: Component[];
+    children?: JSX.Element;
     draggable: boolean;
     id: string;
+    text: string;
     findItem: (id: string) => { index: number };
     moveItem: (id: string, to: number) => void;
 };
+
 interface Item {
     id: string;
     originalIndex: number;
 }
 
-const ColumnItem = ({
-    id,
-    data,
-    components,
-    path,
-    ...props
-}: ColumnItemProps) => {
-    const ref = useRef(null);
-
+const ColumnItem = ({ id, ...props }: ColumnItemProps) => {
     const originalIndex = props.findItem(id).index;
     const [{ isDragging }, drag, preview] = useDrag(
         () => ({
-            type: ItemTypes.LIST_ITEM,
+            type: COLUMN_ITEM,
             item: { id, originalIndex },
             collect: (monitor) => ({ isDragging: monitor.isDragging() }),
             end: (item, monitor) => {
@@ -68,7 +40,7 @@ const ColumnItem = ({
 
     const [, drop] = useDrop(
         () => ({
-            accept: ItemTypes.LIST_ITEM,
+            accept: DROP_TARGETS,
             hover({ id: draggedId }: Item) {
                 if (draggedId !== id) {
                     const { index: overIndex } = props.findItem(id);
@@ -83,7 +55,7 @@ const ColumnItem = ({
 
     return (
         <li
-            // ref={ref}
+            // ref={preview}
             ref={(node) => drag(drop(node))}
             style={{ opacity: opacity }}
             className="p-2"
@@ -164,6 +136,7 @@ const ColumnItem = ({
                     ref={(node) => drag(drop(node))}
                     className="w-10 h-10 rounded-lg bg-gray-500 cursor-move focus:cursor-move"
                 ></div> */}
+                    {props.children}
                 </div>
             </form>
         </li>
