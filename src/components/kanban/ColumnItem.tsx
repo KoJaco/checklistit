@@ -1,36 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { AiOutlinePaperClip } from 'react-icons/ai';
 import { MdDragIndicator } from 'react-icons/md';
 import { ItemTypes } from './types';
 
+import { COMPONENT } from '@/static/ts/constants';
+
+// type ColumnItemProps = {
+//     children: JSX.Element;
+//     draggable: boolean;
+//     id: string;
+//     text: string;
+//     findItem: (id: string) => { index: number };
+//     moveItem: (id: string, to: number) => void;
+// };
+
+type Data = {
+    type: string;
+    id: string;
+    children?: Data[];
+};
+
+type Component = {
+    type: string;
+    content: string;
+};
+
 type ColumnItemProps = {
-    children: JSX.Element;
+    data?: Data;
+    path?: string;
+    components?: Component[];
     draggable: boolean;
     id: string;
-    text: string;
     findItem: (id: string) => { index: number };
     moveItem: (id: string, to: number) => void;
 };
-
 interface Item {
     id: string;
     originalIndex: number;
 }
 
-const tags = [
-    { id: 1, name: 'None', value: null },
-    { id: 2, name: 'Urgent', value: 'urgent' },
-];
-
-const dueDates = [
-    { name: 'No due date', value: null },
-    { name: 'Today', value: 'today' },
-];
-
-const ColumnItem = ({ id, ...props }: ColumnItemProps) => {
-    const [tagged, setTagged] = useState(tags[0]);
-    const [dated, setDated] = useState(dueDates[0]);
+const ColumnItem = ({
+    id,
+    data,
+    components,
+    path,
+    ...props
+}: ColumnItemProps) => {
+    const ref = useRef(null);
 
     const originalIndex = props.findItem(id).index;
     const [{ isDragging }, drag, preview] = useDrag(
@@ -66,8 +83,8 @@ const ColumnItem = ({ id, ...props }: ColumnItemProps) => {
 
     return (
         <li
-            // ref={preview}
-            ref={(node) => drag(drop(node))}
+            ref={ref}
+            // ref={(node) => drag(drop(node))}
             style={{ opacity: opacity }}
             className="p-2"
         >
@@ -147,7 +164,6 @@ const ColumnItem = ({ id, ...props }: ColumnItemProps) => {
                     ref={(node) => drag(drop(node))}
                     className="w-10 h-10 rounded-lg bg-gray-500 cursor-move focus:cursor-move"
                 ></div> */}
-                    {props.children}
                 </div>
             </form>
         </li>

@@ -89,6 +89,12 @@ const Sidebar = (props: SidebarProps) => {
                                 All Boards
                             </p>
                         </div>
+
+                        <div className="mt-10">
+                            <p className="text-gray-400 m-3 mt-4 uppercase">
+                                Column Templates
+                            </p>
+                        </div>
                         <div className="mt-10">
                             <p className="text-gray-400 m-3 mt-4 uppercase">
                                 Theme Settings

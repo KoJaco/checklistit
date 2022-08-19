@@ -99,10 +99,7 @@ const Column = (props: ColumnProps) => {
                                     moveItem={moveItem}
                                     findItem={findItem}
                                     draggable={true}
-                                    text={item.text}
-                                >
-                                    <span></span>
-                                </ColumnItem>
+                                />
                             </div>
                         ))}
                     </ul>

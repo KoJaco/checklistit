@@ -1,89 +1,157 @@
-    const onDragStart = (e: DragEvent & { dataTransfer?: DataTransfer }) => {
-        // remove default drag ghost
-        e.dataTransfer.effectAllowed = 'move';
-        // @ts-ignore
+import React, { useState } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
+import { AiOutlinePaperClip } from 'react-icons/ai';
+import { MdDragIndicator } from 'react-icons/md';
+import { ItemTypes } from './types';
 
-        e.dataTransfer.setDragImage(e.target, 50000, 50000);
+type ColumnItemProps = {
+    children: JSX.Element;
+    draggable: boolean;
+    id: string;
+    text: string;
+    findItem: (id: string) => { index: number };
+    moveItem: (id: string, to: number) => void;
+};
 
-        // custom drag ghost
-        // @ts-ignore
+interface Item {
+    id: string;
+    originalIndex: number;
+}
 
-        let ghostNode = e.target?.cloneNode(true);
+const tags = [
+    { id: 1, name: 'None', value: null },
+    { id: 2, name: 'Urgent', value: 'urgent' },
+];
 
-        ghostNode.style.position = 'absolute';
+const dueDates = [
+    { name: 'No due date', value: null },
+    { name: 'Today', value: 'today' },
+];
 
-        // show ghost add mouse pointer position
-        // @ts-ignore
+const ColumnItem = ({ id, ...props }: ColumnItemProps) => {
+    const [tagged, setTagged] = useState(tags[0]);
+    const [dated, setDated] = useState(dueDates[0]);
 
-        ghostNode.style.top = e.pageY - e.target?.offsetHeight / 2 + 'px';
-        // @ts-ignore
+    const originalIndex = props.findItem(id).index;
+    const [{ isDragging }, drag, preview] = useDrag(
+        () => ({
+            type: ItemTypes.LIST_ITEM,
+            item: { id, originalIndex },
+            collect: (monitor) => ({ isDragging: monitor.isDragging() }),
+            end: (item, monitor) => {
+                const { id: droppedId, originalIndex } = item;
+                const didDrop = monitor.didDrop();
+                if (!didDrop) {
+                    props.moveItem(droppedId, originalIndex);
+                }
+            },
+        }),
+        [id, originalIndex, props.moveItem]
+    );
 
-        ghostNode.style.left = e.pageX - e.target?.offsetWidth / 2 + 'px';
+    const [, drop] = useDrop(
+        () => ({
+            accept: ItemTypes.LIST_ITEM,
+            hover({ id: draggedId }: Item) {
+                if (draggedId !== id) {
+                    const { index: overIndex } = props.findItem(id);
+                    props.moveItem(draggedId, overIndex);
+                }
+            },
+        }),
+        [props.findItem, props.moveItem]
+    );
 
-        // add width height to ghost node
-        // @ts-ignore
+    const opacity = isDragging ? 0 : 0.9;
 
-        ghostNode.style.height = e.target?.offsetHeight + 'px';
-        // @ts-ignore
+    return (
+        <li
+            // ref={preview}
+            ref={(node) => drag(drop(node))}
+            style={{ opacity: opacity }}
+            className="p-2"
+        >
+            <form action="#" className="relative">
+                <div className="p-2 border border-gray-300 rounded-lg shadow-sm bg-gray-50 overflow-hidden focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-slate-500">
+                    <label htmlFor="title" className="sr-only">
+                        Title
+                    </label>
+                    <div className="flex flex-row items-center">
+                        <input
+                            type="text"
+                            name="title"
+                            id="title"
+                            className="block w-full border-0 pt-2.5 text-lg font-medium text-slate-800 bg-gray-50 placeholder-gray-500 focus:outline-none"
+                            placeholder="Title"
+                        />
+                        <div
+                            className="block p-2 text-gray-500 cursor-move focus:cursor-move"
+                            // ref={(node) => drag(drop(node))}
+                            // ref={drag}
+                        >
+                            <MdDragIndicator />
+                        </div>
+                    </div>
 
-        ghostNode.style.width = e.target?.offsetWidth + 'px';
+                    <div className="flex"></div>
+                    <label htmlFor="description" className="sr-only">
+                        Description
+                    </label>
+                    <textarea
+                        rows={2}
+                        name="description"
+                        id="description"
+                        className="block w-full border-0 py-2 resize-none bg-gray-50 placeholder-gray-500 focus:ring-0 sm:text-md focus:outline-none"
+                        placeholder="Write a description..."
+                        defaultValue={''}
+                    />
+                    {/* Spacer Element, show on focused */}
+                    <div aria-hidden="true">
+                        <div className="py-1">
+                            <div className="h-3" />
+                        </div>
+                        <div className="h-px" />
+                        <div className="py-1">
+                            <div className="py-px">
+                                <div className="h-3" />
+                            </div>
+                        </div>
+                    </div>
 
-        // add some style
-        ghostNode.style.opacity = '0.8';
-        ghostNode.style.pointerEvents = 'none';
+                    <div className="border-t border-gray-200 px-2 py-2 flex justify-between items-center space-x-3 sm:px-3">
+                        <div className="flex">
+                            <button
+                                type="button"
+                                className="-ml-2 -my-2 rounded-full px-3 py-2 inline-flex items-center text-left text-gray-400 group"
+                            >
+                                <AiOutlinePaperClip
+                                    className="-ml-1 h-5 w-5 mr-2 group-hover:text-gray-500"
+                                    aria-hidden="true"
+                                />
+                                <span className="text-sm text-gray-500 group-hover:text-gray-600 italic">
+                                    Attach a file
+                                </span>
+                            </button>
+                        </div>
+                        <div className="flex-shrink-0">
+                            <button
+                                type="submit"
+                                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-bg/[0.8] hover:bg-primary-bg hover:drop-shadow focus:outline-none focus:drop-shadow-lg transition-colors duration-300"
+                            >
+                                Create
+                            </button>
+                        </div>
+                    </div>
 
-        // add id
-        ghostNode.id = 'ghostNode';
+                    {/* <div
+                    ref={(node) => drag(drop(node))}
+                    className="w-10 h-10 rounded-lg bg-gray-500 cursor-move focus:cursor-move"
+                ></div> */}
+                    {props.children}
+                </div>
+            </form>
+        </li>
+    );
+};
 
-        document.body.prepend(ghostNode);
-
-        // identify selected item
-        // @ts-ignore
-
-        itemRef.current.classList.add('dragstart');
-
-        if (props.onDragStart) {
-            props.onDragStart(props.index);
-        }
-    };
-
-    // event when dragging
-    const onDrag = (e: DragEvent) => {
-        // move ghost node with mouse
-        let ghostNode: HTMLElement | null =
-            document.querySelector('#ghostNode');
-        // @ts-ignore
-        ghostNode.style.top = e.pageY - e.target?.offsetHeight / 2 + 'px';
-        // @ts-ignore
-        ghostNode.style.left = e.pageX - e.target?.offsetWidth / 2 + 'px';
-    };
-
-    // event when drag end
-    const onDragEnd = () => {
-        // remove ghost node
-        document.querySelector('#ghostNode')?.remove();
-        // remove selected item style
-        // @ts-ignore
-        itemRef.current?.classList.remove('dragstart');
-    };
-
-    // event when drag over item
-    // @ts-ignore
-
-    const onDragEnter = () => itemRef.current?.classList.add('dragover');
-
-    // event when drag leave item
-    // @ts-ignore
-
-    const onDragLeave = () => itemRef.current?.classList.remove('dragover');
-
-    // add event for item can drop
-    const onDragOver = (e: Event) => e.preventDefault();
-
-    // event when drop
-    const onDrop = (index: number) => {
-        // @ts-ignore
-
-        itemRef.current.classList.remove('dragover');
-        props.onDrop(props.index);
-    };
+export default ColumnItem;
