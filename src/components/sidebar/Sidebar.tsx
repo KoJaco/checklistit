@@ -98,9 +98,9 @@ const Sidebar = (props: SidebarProps) => {
                             <p className="text-gray-400 m-3 mt-4 uppercase">
                                 Column Templates
                             </p>
-                            {columnTemplateItems.map((item) => (
+                            {/* {columnTemplateItems.map((item) => (
                                 <ColumnTemplate key={item.id} data={item} />
-                            ))}
+                            ))} */}
                         </div>
                         <div className="mt-10">
                             <p className="text-gray-400 m-3 mt-4 uppercase">

@@ -13,32 +13,32 @@ export const COLUMN_TEMPLATE_ITEMS = [
         id: shortid.generate(),
         type: COLUMN_TEMPLATE_ITEM,
         column: {
-            type: 'toDo',
-            content: 'To Do List',
+            identifier: 'toDo',
+            title: 'To Do List',
         },
     },
     {
         id: shortid.generate(),
         type: COLUMN_TEMPLATE_ITEM,
         column: {
-            type: 'progress',
-            content: 'In Progress',
+            identifier: 'progress',
+            title: 'In Progress',
         },
     },
     {
         id: shortid.generate(),
         type: COLUMN_TEMPLATE_ITEM,
         column: {
-            type: 'completed',
-            content: 'Done',
+            identifier: 'completed',
+            title: 'Done',
         },
     },
     {
         id: shortid.generate(),
         type: COLUMN_TEMPLATE_ITEM,
         column: {
-            type: 'reminders',
-            content: 'Remember these!',
+            identifier: 'reminders',
+            title: 'Remember these!',
         },
     },
 ];

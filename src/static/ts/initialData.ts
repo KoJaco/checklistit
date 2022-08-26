@@ -1,6 +1,6 @@
 import { COLUMN_ITEM, ROW, COLUMN } from '@/core/constants/dragDropConsts';
 
-const initialData = {
+export const initialData = {
     layout: [
         {
             type: ROW,
@@ -11,6 +11,8 @@ const initialData = {
                     type: COLUMN,
                     id: 'column0',
                     depth: 2,
+                    identifier: '',
+                    title: '',
                     children: [
                         {
                             type: COLUMN_ITEM,
@@ -27,6 +29,8 @@ const initialData = {
                 {
                     type: COLUMN,
                     id: 'column1',
+                    identifier: '',
+                    title: '',
                     depth: 2,
 
                     children: [
@@ -49,6 +53,8 @@ const initialData = {
                     type: COLUMN,
                     id: 'column2',
                     depth: 2,
+                    identifier: '',
+                    title: '',
                     children: [
                         {
                             type: COLUMN_ITEM,
@@ -100,5 +106,3 @@ const initialData = {
         },
     },
 };
-
-export default initialData;

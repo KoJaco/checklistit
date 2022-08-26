@@ -1,11 +1,15 @@
-export type Children = Array<Item>;
+export type Children = Array<TItem>;
 
-export interface Item {
-    type: string;
+export type TItem = {
+    type: 'row' | 'column' | 'columnItem' | 'columnTemplateItem';
     id: string;
     depth?: 1 | 2 | 3;
-    children?: Children;
-}
+    column?: {
+        identifier: string;
+        title: string;
+    };
+    children?: Children | undefined;
+};
 
 export type TRow = {
     type: 'row';
@@ -33,5 +37,9 @@ export type TColumnItemComponent = {
     content: string;
 };
 
+export type TDropZone = {
+    path: string;
+};
+
 // Layout has recursive relationship... there is no difference between layout and children.
-export type TLayout = Array<Item>;
+export type TLayout = Array<TItem>;

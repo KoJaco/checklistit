@@ -3,9 +3,10 @@ import { useDrag } from 'react-dnd';
 import type { DragSourceMonitor } from 'react-dnd';
 
 type ColumnTemplateItem = {
-    type: string;
-    content: string;
+    identifier: string;
+    title: string;
 };
+
 interface ColumnTemplateProps {
     data: {
         id: string;
@@ -41,7 +42,7 @@ const ColumnTemplate = ({
             ref={drag}
             style={{ opacity }}
         >
-            <span className="capitalize">{data.column.content}</span>
+            <span className="capitalize">{data.column.title}</span>
         </div>
     );
 };

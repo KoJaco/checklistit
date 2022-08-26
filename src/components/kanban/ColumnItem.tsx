@@ -51,7 +51,7 @@ const ColumnItem = ({ id, ...props }: ColumnItemProps) => {
         [props.findItem, props.moveItem]
     );
 
-    const opacity = isDragging ? 0 : 0.9;
+    const opacity = isDragging ? 0 : 1;
 
     return (
         <li

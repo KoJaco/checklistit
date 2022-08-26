@@ -1,5 +1,6 @@
 // src/pages/_app.tsx
 import { withTRPC } from '@trpc/next';
+import { useState } from 'react';
 import type { AppRouter } from '../server/router';
 import type { AppType } from 'next/dist/shared/lib/utils';
 import superjson from 'superjson';
@@ -8,6 +9,9 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { UIContextProvider } from '@/contexts/UIContextProvider';
+
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import shortid from 'shortid';
 
 const MyApp: AppType = ({ Component, pageProps }) => {
     return (
