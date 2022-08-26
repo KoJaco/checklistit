@@ -70,6 +70,13 @@ module.exports = {
             minHeight: {
                 590: '590px',
             },
+            transitionProperty: {
+                height: 'height',
+                spacing: 'margin, padding',
+            },
+            variants: {
+                height: ['hover', 'focus'],
+            },
         },
         backdropBlur: ({ theme }) => theme('blur'),
         backdropBrightness: ({ theme }) => theme('brightness'),

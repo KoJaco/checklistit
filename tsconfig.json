@@ -28,7 +28,8 @@
         "jsx": "preserve",
         "incremental": true,
         "noUncheckedIndexedAccess": true,
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "suppressImplicitAnyIndexErrors": true
     },
     "include": [
         "next-env.d.ts",

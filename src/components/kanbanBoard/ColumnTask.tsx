@@ -1,13 +1,14 @@
 import React from 'react';
 import { AiOutlinePaperClip } from 'react-icons/ai';
-import { MdDragIndicator } from 'react-icons/md';
+
 import { COLUMN_ITEM, COLUMN } from '@/core/constants/dragDropConsts';
+import ArrowIcon from '@/components/elements/ArrowIcon';
 
 const DROP_TARGETS = [COLUMN, COLUMN_ITEM];
 
 type ColumnTaskProps = {
     children?: JSX.Element;
-    id: string;
+    id: number;
     text: string;
     editing: boolean;
 };
@@ -25,7 +26,7 @@ const ColumnTask = ({ id, editing = false, ...props }: ColumnTaskProps) => {
         //     className="p-2"
         // >
         <form action="#" className="relative">
-            <div className="p-2 border border-gray-300 rounded-lg shadow-sm bg-gray-50 overflow-hidden focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-slate-500">
+            <div className="py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-gray-50 overflow-hidden focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-slate-500 group">
                 {/* <label htmlFor="title" className="sr-only">
                     Title
                 </label>
@@ -50,22 +51,23 @@ const ColumnTask = ({ id, editing = false, ...props }: ColumnTaskProps) => {
                 <label htmlFor="description" className="sr-only">
                     Description
                 </label>
-                <div className="py-0.5 flex flex-col items-end w-full">
-                    <div
-                        className="text-gray-500 cursor-move focus:cursor-move"
-                        // ref={(node) => drag(drop(node))}
-                        // ref={drag}
-                    >
-                        <MdDragIndicator />
+                <div className="opacity-0 flex flex-row justify-between w-full group-hover:opacity-100 group-hover:py-2 group-hover:mb-2 transition-all duration-1000">
+                    <div className="flex">
+                        <div className="w-4 h-4 rounded-md bg-indigo-600 cursor-pointer"></div>
                     </div>
+                    <div className="flex">
+                        <ArrowIcon direction="left" disabled={true} />
+                        <ArrowIcon direction="right" disabled={false} />
+                    </div>
+                    <div>{props.children}</div>
                 </div>
                 <textarea
                     rows={2}
                     name="description"
                     id="description"
-                    className="border-0 w-full resize-none bg-gray-50 text-gray-500 focus:ring-0 sm:text-md focus:outline-none placeholder:italic placeholder:text-gray-500/[0.5] focus:resize"
+                    className="border-0 w-full my-2 resize-none bg-gray-50 text-gray-500 focus:ring-0 sm:text-md focus:outline-none placeholder:italic placeholder:text-gray-500/[0.5] focus:resize-y"
                     placeholder="Start writing..."
-                    defaultValue={''}
+                    defaultValue={props.text}
                 />
                 {/* Spacer Element, show when editing or 'focused' */}
 
@@ -81,36 +83,27 @@ const ColumnTask = ({ id, editing = false, ...props }: ColumnTaskProps) => {
                     </div>
                 </div> */}
 
-                <div className="border-t border-gray-200 px-2 py-2 flex justify-between items-center space-x-3 sm:px-3">
+                <div className="opacity-0 max-h-0 border-t border-gray-200 flex justify-between items-center group-hover:opacity-100 group-hover:py-5 px-2 transition-all duration-1000 ease-in-out">
                     <div className="flex">
                         <button
                             type="button"
-                            className="-ml-2 -my-2 rounded-full px-3 py-2 inline-flex items-center text-left text-gray-400 group"
+                            className="-ml-2 -my-2 rounded-full py-2 inline-flex items-center text-left text-gray-400 group"
                         >
                             <AiOutlinePaperClip
-                                className="-ml-1 h-5 w-5 mr-2 group-hover:text-gray-500"
+                                className="h-5 w-5 mr-2 hover:text-gray-500"
                                 aria-hidden="true"
                             />
-                            <span className="text-sm text-gray-500 group-hover:text-gray-600 italic">
-                                Attach a file
-                            </span>
                         </button>
                     </div>
                     <div className="flex-shrink-0">
                         <button
                             type="submit"
-                            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-bg/[0.8] hover:bg-primary-bg hover:drop-shadow focus:outline-none focus:drop-shadow-lg transition-colors duration-300"
+                            className="inline-flex items-center px-3 py-1 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-bg/[0.8] hover:bg-primary-bg hover:drop-shadow focus:outline-none focus:drop-shadow-lg transition-colors duration-1000"
                         >
-                            Create
+                            Save
                         </button>
                     </div>
                 </div>
-
-                {/* <div
-                    ref={(node) => drag(drop(node))}
-                    className="w-10 h-10 rounded-lg bg-gray-500 cursor-move focus:cursor-move"
-                ></div> */}
-                {props.children}
             </div>
         </form>
         // </li>

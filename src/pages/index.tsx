@@ -4,53 +4,57 @@ import { useState } from 'react';
 import { trpc } from '@/core/utils/trpc';
 import BaseLayout from '@/layouts/BaseLayout';
 
-import { DragDropContext } from 'react-beautiful-dnd';
-import Kanban from '@/components/kanbanBoard/Kanban';
+import { BoardLayout } from '@/components/kanbanBoard/types';
+import shortid from 'shortid';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
 const Column = dynamic(() => import('@/components/kanbanBoard/Column'), {
     ssr: false,
 });
 
-const reorderColumnList = (
-    sourceCol: any,
-    startIndex: number,
-    endIndex: number
-) => {
-    const newTaskIds = Array.from(sourceCol.taskIds);
-    const [removed] = newTaskIds.splice(startIndex, 1);
-    newTaskIds.splice(endIndex, 0, removed);
-
-    const newColumn = {
-        ...sourceCol,
-        taskIds: newTaskIds,
-    };
-
-    return newColumn;
-};
+const Kanban = dynamic(() => import('@/components/kanbanBoard/Kanban'), {
+    ssr: false,
+});
 
 const initialData = {
     tasks: {
-        1: { id: 1, content: 'Configure Next.js application' },
-        2: { id: 2, content: 'Configure Next.js and tailwind ' },
-        3: { id: 3, content: 'Create sidebar navigation menu' },
-        4: { id: 4, content: 'Create page footer' },
-        5: { id: 5, content: 'Create page navigation menu' },
-        6: { id: 6, content: 'Create page layout' },
+        'task-1': { id: 1, content: 'Configure Next.js application' },
+        'task-2': {
+            id: 2,
+            content: 'Configure Next.js and tailwind ',
+        },
+        'task-3': {
+            id: 3,
+            content: 'Create sidebar navigation menu',
+        },
+        'task-4': { id: 4, content: 'Create page footer' },
+        'task-5': { id: 5, content: 'Create page navigation menu' },
+        'task-6': { id: 6, content: 'Create page layout' },
     },
     columns: {
         'column-1': {
             id: 'column-1',
-            title: 'TO-DO',
-            taskIds: [1, 2, 3, 4, 5, 6],
+            title: 'To Do',
+            bgColor: '',
+            taskIds: [
+                'task-1',
+                'task-2',
+                'task-3',
+                'task-4',
+                'task-5',
+                'task-6',
+            ],
         },
         'column-2': {
             id: 'column-2',
-            title: 'IN-PROGRESS',
+            title: 'In Progress',
+            bgColor: '',
             taskIds: [],
         },
         'column-3': {
             id: 'column-3',
-            title: 'COMPLETED',
+            title: 'Complete',
+            bgColor: '',
             taskIds: [],
         },
     },
@@ -59,93 +63,100 @@ const initialData = {
 };
 
 const Home: NextPage = () => {
-    const [state, setState] = useState(initialData);
+    const [boardState, setBoardState] = useState(initialData);
 
-    const onDragEnd = (result: any) => {
-        const { destination, source } = result;
-        // If user tries to drop in an unknown destination
+    const onDragEnd = (result: DropResult) => {
+        const { destination, source, draggableId, type } = result;
+
         if (!destination) return;
-        // if the user drags and drops back in the same position
+
         if (
             destination.droppableId === source.droppableId &&
             destination.index === source.index
         ) {
             return;
         }
-        // If the user drops within the same column but in a different position
-        // @ts-ignore
-        const sourceCol = state.columns[source.droppableId];
-        // @ts-ignore
-        const destinationCol = state.columns[destination.droppableId];
 
-        if (sourceCol.id === destinationCol.id) {
-            const newColumn = reorderColumnList(
-                sourceCol,
-                source.index,
-                destination.index
-            );
+        // handle re-ordering for a column
+
+        if (type === 'column') {
+            const newColumnOrder = Array.from(boardState.columnOrder);
+            newColumnOrder.splice(source.index, 1);
+            newColumnOrder.splice(destination.index, 0, draggableId);
 
             const newState = {
-                ...state,
+                ...boardState,
+                columnOrder: newColumnOrder,
+            };
+            setBoardState(newState);
+            return;
+        }
+
+        const startColumn = boardState.columns[source.droppableId];
+        const finishColumn = boardState.columns[destination.droppableId];
+
+        if (startColumn === finishColumn) {
+            // create new task id array
+            const newTaskIds = Array.from(startColumn.taskIds);
+            // move task id from old index to new index
+            newTaskIds.splice(source.index, 1);
+            newTaskIds.splice(destination.index, 0, draggableId);
+
+            const newColumn = {
+                ...startColumn,
+                taskIds: newTaskIds,
+            };
+
+            const newState = {
+                ...boardState,
                 columns: {
-                    ...state.columns,
+                    ...boardState.columns,
                     [newColumn.id]: newColumn,
                 },
             };
-            setState(newState);
+
+            setBoardState(newState);
             return;
         }
-        // If the user moves from one column to another
-        const startTaskIds = Array.from(sourceCol.taskIds);
-        const [removed] = startTaskIds.splice(source.index, 1);
-        const newStartCol = {
-            ...sourceCol,
+
+        // moving from one column to another
+        const startTaskIds = Array.from(startColumn.taskIds);
+        startTaskIds.splice(source.index, 1);
+
+        const newStartColumn = {
+            ...startColumn,
             taskIds: startTaskIds,
         };
 
-        const endTaskIds = Array.from(destinationCol.taskIds);
-        endTaskIds.splice(destination.index, 0, removed);
-        const newEndCol = {
-            ...destinationCol,
-            taskIds: endTaskIds,
+        const finishTaskIds = Array.from(finishColumn.taskIds);
+        finishTaskIds.splice(destination.index, 0, draggableId);
+        const newFinishColumn = {
+            ...finishColumn,
+            taskIds: finishTaskIds,
         };
 
         const newState = {
-            ...state,
+            ...boardState,
             columns: {
-                ...state.columns,
-                [newStartCol.id]: newStartCol,
-                [newEndCol.id]: newEndCol,
+                ...boardState.columns,
+                [newStartColumn.id]: newStartColumn,
+                [newFinishColumn.id]: newFinishColumn,
             },
         };
-
-        setState(newState);
+        setBoardState(newState);
     };
-
     return (
         <>
             <BaseLayout>
                 <main className="container mx-auto flex flex-col items-center justify-center h-screen p-10 dark:bg-main-dark-bg">
-                    <div className="w-full h-auto mt-20 p-5 ">
+                    <div className="w-full h-auto mt-20 p-2">
                         {/* Kanban component */}
-                        <DragDropContext onDragEnd={onDragEnd}>
-                            <Kanban title="Title">
-                                <>
-                                    {state.columnOrder.map((columnId) => {
-                                        const column = state.columns[columnId];
-                                        const tasks = column.taskIds.map(
-                                            (taskId: any) => state.tasks[taskId]
-                                        );
-                                        return (
-                                            <Column
-                                                key={column.id}
-                                                column={column}
-                                                tasks={tasks}
-                                            />
-                                        );
-                                    })}
-                                </>
-                            </Kanban>
+                        <DragDropContext
+                            onDragEnd={onDragEnd}
+                            // onDragStart={onDragStart}
+                            // onDragUpdate={onDragUpdate}
+                        >
+                            <Kanban title="Title" boardState={boardState} />
                         </DragDropContext>
                     </div>
                 </main>
