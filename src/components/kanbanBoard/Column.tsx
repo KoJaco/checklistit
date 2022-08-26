@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Droppable } from 'react-beautiful-dnd';
 import ColumnTask from './ColumnTask';
-import { MdDragIndicator } from 'react-icons/md';
+import { MdDragIndicator, MdAdd } from 'react-icons/md';
 import type { TColumnItem, TColumn, TTask } from './types';
+import { HexColorPicker } from 'react-colorful';
 
 type ColumnProps = {
     column: TColumn | undefined;
@@ -14,7 +15,14 @@ type ColumnProps = {
 };
 
 const Column = ({ children, ...props }: ColumnProps) => {
+    const [color, setColor] = useState('#000');
+    const [showColorPicker, setShowColorPicker] = useState(false);
+
     const { column, tasks } = props;
+
+    function handleShowColorPicker() {
+        setShowColorPicker(!showColorPicker);
+    }
 
     return (
         <Draggable draggableId={column!.id} index={props.index}>
@@ -25,18 +33,34 @@ const Column = ({ children, ...props }: ColumnProps) => {
                     ref={draggableProvided.innerRef}
                 >
                     <div
-                        className="flex w-full bg-transparent p-2 ml-2"
+                        className="flex justify-between items-center w-full bg-transparent p-2 ml-2"
                         {...draggableProvided.dragHandleProps}
                     >
                         <h1 className="text-xl text-gray-500 font-medium italic">
                             {props.columnTitle}
                         </h1>
+                        <div className="flex justify-right mr-4">
+                            <button
+                                className="rounded-md border w-5 h-5"
+                                style={{ backgroundColor: color }}
+                                onClick={handleShowColorPicker}
+                            ></button>
+                        </div>
+
+                        {showColorPicker && (
+                            <div className="">
+                                <HexColorPicker
+                                    color={color}
+                                    onChange={setColor}
+                                ></HexColorPicker>
+                            </div>
+                        )}
                     </div>
                     {/* Indicated that column will NEVER be undefined */}
                     <Droppable droppableId={column!.id} type="task">
                         {(droppableProvided, droppableSnapshot) => (
                             <div
-                                className="px-3 rounded-lg transition-color duration-300 h-full"
+                                className="px-3 mx-1 rounded-lg transition-color duration-300 h-full"
                                 style={{
                                     backgroundColor:
                                         droppableSnapshot.isDraggingOver
@@ -74,6 +98,7 @@ const Column = ({ children, ...props }: ColumnProps) => {
                                     </Draggable>
                                 ))}
                                 {droppableProvided.placeholder}
+                                {/* {children} */}
                             </div>
                         )}
                     </Droppable>

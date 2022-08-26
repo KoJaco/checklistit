@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { trpc } from '@/core/utils/trpc';
 import BaseLayout from '@/layouts/BaseLayout';
 
@@ -64,6 +64,13 @@ const initialData = {
 
 const Home: NextPage = () => {
     const [boardState, setBoardState] = useState(initialData);
+    const [isCSR, setIsCSR] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setIsCSR(true);
+        }
+    }, []);
 
     const onDragEnd = (result: DropResult) => {
         const { destination, source, draggableId, type } = result;
@@ -156,7 +163,11 @@ const Home: NextPage = () => {
                             // onDragStart={onDragStart}
                             // onDragUpdate={onDragUpdate}
                         >
-                            <Kanban title="Title" boardState={boardState} />
+                            <Kanban
+                                title="Title"
+                                boardState={boardState}
+                                setBoardState={setBoardState}
+                            />
                         </DragDropContext>
                     </div>
                 </main>
