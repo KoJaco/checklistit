@@ -27,6 +27,7 @@ interface UseEditFieldResult {
 
 export function useOnClickOutside(
     ref: React.RefObject<any>,
+    // is the event parameter necessary?
     handler: (e: MouseEvent | TouchEvent) => void
 ) {
     useEffect(() => {

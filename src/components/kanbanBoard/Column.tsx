@@ -35,6 +35,7 @@ const Column = ({ children, ...props }: ColumnProps) => {
     }
 
     function handleShowColorPicker() {
+        // will always be setting to true, clickOutside handles closing color picker.
         setShowColorPicker(!showColorPicker);
     }
 
@@ -55,9 +56,11 @@ const Column = ({ children, ...props }: ColumnProps) => {
                         </h1>
                         <div className="flex justify-right mr-4">
                             <button
-                                className="rounded-md border w-5 h-5"
+                                className="rounded-md border w-5 h-5 "
                                 style={{ backgroundColor: parsedColor(color) }}
                                 onClick={handleShowColorPicker}
+                                // disable when selecting color, let useOnClickOutside handle close
+                                disabled={showColorPicker ? true : false}
                             ></button>
                         </div>
                     </div>
