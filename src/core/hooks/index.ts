@@ -25,7 +25,32 @@ interface UseEditFieldResult {
     inputRef: RefObject<HTMLInputElement> | null;
 }
 
-const useEditField = ({
+export function useOnClickOutside(
+    ref: React.RefObject<any>,
+    handler: (e: MouseEvent | TouchEvent) => void
+) {
+    useEffect(() => {
+        // add listener, called with addEventListener(s)
+        const listener = (event: MouseEvent | TouchEvent) => {
+            if (!ref.current || ref.current.contains(event.target)) {
+                return;
+            }
+            handler(event);
+        };
+
+        // listen to both "mousedown" and "touchstart" for desktop/mobile devices
+        document.addEventListener('mousedown', listener);
+        document.addEventListener('touchstart', listener);
+
+        // cleanup function, remove both listeners
+        return () => {
+            document.removeEventListener('mousedown', listener);
+            document.removeEventListener('touchstart', listener);
+        };
+    }, [ref, handler]);
+}
+
+export const useEditField = ({
     fieldId,
     onCreate,
     onEdit,
@@ -85,5 +110,3 @@ const useEditField = ({
         inputRef,
     };
 };
-
-export default useEditField;

@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Droppable } from 'react-beautiful-dnd';
 import ColumnTask from './ColumnTask';
 import { MdDragIndicator, MdAdd } from 'react-icons/md';
 import type { TColumnItem, TColumn, TTask } from './types';
-import { HexColorPicker } from 'react-colorful';
+import { RgbaColorPicker } from 'react-colorful';
+
+import { useOnClickOutside } from '@/core/hooks';
 
 type ColumnProps = {
     column: TColumn | undefined;
@@ -15,10 +17,22 @@ type ColumnProps = {
 };
 
 const Column = ({ children, ...props }: ColumnProps) => {
-    const [color, setColor] = useState('#000');
+    const [color, setColor] = useState({ r: 200, g: 150, b: 35, a: 0.5 });
     const [showColorPicker, setShowColorPicker] = useState(false);
 
+    const colorPickerRef = useRef(null);
+    useOnClickOutside(colorPickerRef, () => setShowColorPicker(false));
+
     const { column, tasks } = props;
+
+    function parsedColor(color: {
+        r: number;
+        g: number;
+        b: number;
+        a: number;
+    }) {
+        return `rgba(${color.r},${color.g},${color.b},${color.a})`;
+    }
 
     function handleShowColorPicker() {
         setShowColorPicker(!showColorPicker);
@@ -42,20 +56,23 @@ const Column = ({ children, ...props }: ColumnProps) => {
                         <div className="flex justify-right mr-4">
                             <button
                                 className="rounded-md border w-5 h-5"
-                                style={{ backgroundColor: color }}
+                                style={{ backgroundColor: parsedColor(color) }}
                                 onClick={handleShowColorPicker}
                             ></button>
                         </div>
-
-                        {showColorPicker && (
-                            <div className="">
-                                <HexColorPicker
-                                    color={color}
-                                    onChange={setColor}
-                                ></HexColorPicker>
-                            </div>
-                        )}
                     </div>
+                    {showColorPicker && (
+                        <div
+                            ref={colorPickerRef}
+                            className="flex justify-end items-center mr-4"
+                        >
+                            <RgbaColorPicker
+                                className="w-28 h-28 flex justify-end"
+                                color={color}
+                                onChange={setColor}
+                            ></RgbaColorPicker>
+                        </div>
+                    )}
                     {/* Indicated that column will NEVER be undefined */}
                     <Droppable droppableId={column!.id} type="task">
                         {(droppableProvided, droppableSnapshot) => (
@@ -65,7 +82,7 @@ const Column = ({ children, ...props }: ColumnProps) => {
                                     backgroundColor:
                                         droppableSnapshot.isDraggingOver
                                             ? '#F0F0F0'
-                                            : 'transparent',
+                                            : parsedColor(color),
                                 }}
                                 ref={droppableProvided.innerRef}
                                 {...droppableProvided.droppableProps}

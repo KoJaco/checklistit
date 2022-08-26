@@ -14,7 +14,7 @@ const ArrowIcon = (props: ArrowIconProps) => {
         props.direction === 'left' && '',
         props.direction === 'right' && 'rotate-180',
         props.direction === 'up' && 'rotate-90',
-        props.direction === 'down' && 'rotate-270'
+        props.direction === 'down' && '-rotate-90'
     );
 
     return <MdKeyboardArrowLeft className={customStyling} />;

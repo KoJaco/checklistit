@@ -56,8 +56,12 @@ const ColumnTask = ({ id, editing = false, ...props }: ColumnTaskProps) => {
                         <div className="w-4 h-4 rounded-md bg-indigo-600 cursor-pointer"></div>
                     </div>
                     <div className="flex">
-                        <ArrowIcon direction="left" disabled={true} />
+                        <ArrowIcon direction="left" disabled={false} />
                         <ArrowIcon direction="right" disabled={false} />
+                    </div>
+                    <div className="flex">
+                        <ArrowIcon direction="up" disabled={true} />
+                        <ArrowIcon direction="down" disabled={false} />
                     </div>
                     <div>{props.children}</div>
                 </div>
