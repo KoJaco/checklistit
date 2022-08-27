@@ -1,12 +1,11 @@
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
-import { trpc } from '@/core/utils/trpc';
 import BaseLayout from '@/layouts/BaseLayout';
 
-import { BoardLayout } from '@/components/kanbanBoard/types';
-import shortid from 'shortid';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+
+import type { Board } from '@/components/kanbanBoard/types';
 
 const Column = dynamic(() => import('@/components/kanbanBoard/Column'), {
     ssr: false,

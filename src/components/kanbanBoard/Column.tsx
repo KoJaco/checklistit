@@ -3,7 +3,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import { Droppable } from 'react-beautiful-dnd';
 import ColumnTask from './ColumnTask';
 import { MdDragIndicator, MdAdd } from 'react-icons/md';
-import type { TColumnItem, TColumn, TTask } from './types';
+import type { TColumn, TTask, Board } from './types';
 import { RgbaColorPicker } from 'react-colorful';
 
 import { useOnClickOutside } from '@/core/hooks';
@@ -17,7 +17,12 @@ type ColumnProps = {
 };
 
 const Column = ({ children, ...props }: ColumnProps) => {
-    const [color, setColor] = useState({ r: 200, g: 150, b: 35, a: 0.5 });
+    const [color, setColor] = useState<{
+        r: number;
+        g: number;
+        b: number;
+        a: number;
+    }>({ r: 250, g: 250, b: 250, a: 0 });
     const [showColorPicker, setShowColorPicker] = useState(false);
 
     const colorPickerRef = useRef(null);
@@ -56,7 +61,7 @@ const Column = ({ children, ...props }: ColumnProps) => {
                         </h1>
                         <div className="flex justify-right mr-4">
                             <button
-                                className="rounded-md border w-5 h-5 "
+                                className="rounded-md border-1 w-5 h-5 drop-shadow-md"
                                 style={{ backgroundColor: parsedColor(color) }}
                                 onClick={handleShowColorPicker}
                                 // disable when selecting color, let useOnClickOutside handle close
