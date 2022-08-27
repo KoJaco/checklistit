@@ -5,12 +5,6 @@ import BaseLayout from '@/layouts/BaseLayout';
 
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
-import type { Board } from '@/components/kanbanBoard/types';
-
-const Column = dynamic(() => import('@/components/kanbanBoard/Column'), {
-    ssr: false,
-});
-
 const Kanban = dynamic(() => import('@/components/kanbanBoard/Kanban'), {
     ssr: false,
 });
