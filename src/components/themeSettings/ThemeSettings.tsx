@@ -1,7 +1,5 @@
 import React from 'react';
 import { useUIContext } from '@/contexts/UIContextProvider';
-// import { themeColors } from '@/static/ts/theme';
-import Toggle from '@/components/elements/Toggle';
 
 const themeColors = [
     {
@@ -27,10 +25,10 @@ const ThemeSettings = () => {
 
     return (
         <div className="bg-inherit w-full h-auto">
-            <div className="flex-col p-4">
-                <div className="form-check form-switch">
-                    <label className="relative flex justify-between items-center group p-2 text-md">
-                        <span className="text-gray-700 dark:text-gray-200">
+            <div className="flex-col">
+                <div className="form-check form-switch gap-5 px-4 py-3 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2">
+                    <label className="relative flex justify-between items-center group text-md">
+                        <span className="text-gray-700 dark:text-gray-200 dark:group-hover:text-black">
                             Light/Dark
                         </span>
                         <input
@@ -45,27 +43,34 @@ const ThemeSettings = () => {
                     </label>
                 </div>
 
-                <div className="flex gap-2">
-                    {themeColors.map((item) => (
-                        <div
-                            key={item.name}
-                            className="relative mt-2 cursor-pointer flex gap-5 items-center"
-                        >
-                            <button
-                                type="button"
-                                className="h-5 w-5 rounded-md cursor-pointer shadow-sm"
-                                // hydration error without ternary
-                                style={{
-                                    backgroundColor: item.color
-                                        ? item.color
-                                        : '',
-                                }}
-                                onClick={() => {
-                                    setColor(item.color);
-                                }}
-                            ></button>
-                        </div>
-                    ))}
+                <div className="flex flex-row items-center gap-5 px-4 py-3 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2 group">
+                    <label className="flex items-center text-md">
+                        <span className="text-gray-700 dark:text-gray-200 dark:group-hover:text-black">
+                            Theme Colours
+                        </span>
+                    </label>
+                    <div className="grid grid-cols-2 gap-2 ml-auto">
+                        {themeColors.map((item) => (
+                            <div
+                                key={item.name}
+                                className="relative mt-2 cursor-pointer flex items-center"
+                            >
+                                <button
+                                    type="button"
+                                    className="h-5 w-5 rounded-md cursor-pointer shadow-sm"
+                                    // hydration error without ternary
+                                    style={{
+                                        backgroundColor: item.color
+                                            ? item.color
+                                            : '',
+                                    }}
+                                    onClick={() => {
+                                        setColor(item.color);
+                                    }}
+                                ></button>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
