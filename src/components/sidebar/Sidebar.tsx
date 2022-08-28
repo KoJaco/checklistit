@@ -95,7 +95,7 @@ const Sidebar = (props: SidebarProps) => {
                                         backgroundColor:
                                             currentRoute === '/board-1'
                                                 ? currentColor
-                                                : '',
+                                                : 'transparent',
                                     }}
                                     className={
                                         currentRoute === '/board-1'

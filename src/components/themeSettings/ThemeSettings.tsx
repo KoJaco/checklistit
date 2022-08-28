@@ -16,18 +16,6 @@ const themeColors = [
         name: 'offset-theme',
         color: '#490B3D',
     },
-    // {
-    //     name: 'info-theme',
-    //     color: '#9CF6FB',
-    // },
-    // {
-    //     name: 'success-theme',
-    //     color: '#BCFD4C',
-    // },
-    // {
-    //     name: 'light-alt-theme',
-    //     color: '#FDF5DF',
-    // },
     {
         name: 'dark-alt-theme',
         color: '#1A2238',
@@ -66,7 +54,12 @@ const ThemeSettings = () => {
                             <button
                                 type="button"
                                 className="h-5 w-5 rounded-md cursor-pointer shadow-sm"
-                                style={{ backgroundColor: item.color }}
+                                // hydration error without ternary
+                                style={{
+                                    backgroundColor: item.color
+                                        ? item.color
+                                        : '',
+                                }}
                                 onClick={() => {
                                     setColor(item.color);
                                 }}
