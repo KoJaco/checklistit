@@ -3,60 +3,16 @@ import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
 import BaseLayout from '@/layouts/BaseLayout';
 
+import { kanbanBoardMockData } from '@/static/ts/initialData';
+
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
 const Kanban = dynamic(() => import('@/components/kanbanBoard/Kanban'), {
     ssr: false,
 });
 
-const initialData = {
-    tasks: {
-        'task-1': { id: 1, content: 'Configure Next.js application' },
-        'task-2': {
-            id: 2,
-            content: 'Configure Next.js and tailwind ',
-        },
-        'task-3': {
-            id: 3,
-            content: 'Create sidebar navigation menu',
-        },
-        'task-4': { id: 4, content: 'Create page footer' },
-        'task-5': { id: 5, content: 'Create page navigation menu' },
-        'task-6': { id: 6, content: 'Create page layout' },
-    },
-    columns: {
-        'column-1': {
-            id: 'column-1',
-            title: 'To Do',
-            bgColor: '',
-            taskIds: [
-                'task-1',
-                'task-2',
-                'task-3',
-                'task-4',
-                'task-5',
-                'task-6',
-            ],
-        },
-        'column-2': {
-            id: 'column-2',
-            title: 'In Progress',
-            bgColor: '',
-            taskIds: [],
-        },
-        'column-3': {
-            id: 'column-3',
-            title: 'Complete',
-            bgColor: '',
-            taskIds: [],
-        },
-    },
-    // Facilitate reordering of the columns
-    columnOrder: ['column-1', 'column-2', 'column-3'],
-};
-
 const Home: NextPage = () => {
-    const [boardState, setBoardState] = useState(initialData);
+    const [boardState, setBoardState] = useState(kanbanBoardMockData);
     const [isCSR, setIsCSR] = useState(false);
 
     useEffect(() => {
@@ -78,7 +34,6 @@ const Home: NextPage = () => {
         }
 
         // handle re-ordering for a column
-
         if (type === 'column') {
             const newColumnOrder = Array.from(boardState.columnOrder);
             newColumnOrder.splice(source.index, 1);

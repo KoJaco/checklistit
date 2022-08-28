@@ -65,7 +65,7 @@ const ThemeSettings = () => {
                         >
                             <button
                                 type="button"
-                                className="h-5 w-5 rounded-full cursor-pointer"
+                                className="h-5 w-5 rounded-md cursor-pointer shadow-sm"
                                 style={{ backgroundColor: item.color }}
                                 onClick={() => {
                                     setColor(item.color);

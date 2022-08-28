@@ -1,11 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Droppable } from 'react-beautiful-dnd';
-import ColumnTask from './ColumnTask';
-import { MdDragIndicator, MdAdd } from 'react-icons/md';
-import type { TColumn, TTask, Board } from './types';
+
+import { MdDragIndicator } from 'react-icons/md';
 import { RgbaColorPicker } from 'react-colorful';
 
+import ColumnTask from './ColumnTask';
+
+import type { TColumn, TTask } from '@/core/types/kanbanBoard';
 import { useOnClickOutside } from '@/core/hooks';
 
 type ColumnProps = {

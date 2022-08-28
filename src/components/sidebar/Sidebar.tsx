@@ -1,17 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { BsListCheck } from 'react-icons/bs';
+import { BsKanban } from 'react-icons/bs';
+import { IoColorPaletteOutline } from 'react-icons/io5';
 import { SiShopware } from 'react-icons/si';
 import { MdOutlineCancel } from 'react-icons/md';
 
 import ThemeSettings from '@/components/themeSettings/ThemeSettings';
 import { useUIContext } from '@/contexts/UIContextProvider';
-import { COLUMN_TEMPLATE_ITEMS } from '@/core/constants/dragDropConsts';
 
 type SidebarProps = {};
-
-const columnTemplateItems = COLUMN_TEMPLATE_ITEMS;
 
 const Sidebar = (props: SidebarProps) => {
     const { activeMenu, setActiveMenu, screenSize, currentColor } =
@@ -60,11 +58,17 @@ const Sidebar = (props: SidebarProps) => {
                             <MdOutlineCancel />
                         </button>
                     </div>
-                    <div className="mt-10">
+                    <div className="mt-14">
                         <div>
-                            <p className="text-gray-400 m-3 mt-4 uppercase">
-                                Current Board
-                            </p>
+                            <div className="flex items-center justify-start m-3 mt-4 py-2">
+                                <span className="h-full text-gray-400 mr-4">
+                                    <BsKanban className="w-5 h-5" />
+                                </span>
+                                <p className="text-gray-400 mr-4 font-regular uppercase">
+                                    Boards
+                                </p>
+                            </div>
+
                             <Link href="/" passHref={true}>
                                 <a
                                     style={{
@@ -80,35 +84,42 @@ const Sidebar = (props: SidebarProps) => {
                                     }
                                     onClick={handleCloseSidebar}
                                 >
-                                    <BsListCheck />
+                                    <span className="capitalize">
+                                        Board Title
+                                    </span>
+                                </a>
+                            </Link>
+                            <Link href="/board-1" passHref={true}>
+                                <a
+                                    style={{
+                                        backgroundColor:
+                                            currentRoute === '/board-1'
+                                                ? currentColor
+                                                : '',
+                                    }}
+                                    className={
+                                        currentRoute === '/board-1'
+                                            ? 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md m-2 text-gray-50 drop-shadow-md'
+                                            : 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2'
+                                    }
+                                    onClick={handleCloseSidebar}
+                                >
                                     <span className="capitalize">
                                         Board Title
                                     </span>
                                 </a>
                             </Link>
                         </div>
-                        <div className="mt-10">
-                            <p className="text-gray-400 m-3 mt-4 uppercase">
-                                All Boards
+                        <div className="mt-14 flex items-center justify-start m-3 py-2">
+                            <span className="h-full text-gray-400 mr-4">
+                                <IoColorPaletteOutline className="w-5 h-5" />
+                            </span>
+                            <p className="text-gray-400 mr-4 font-regular uppercase">
+                                Theme and Colours
                             </p>
                         </div>
-
-                        <div className="mt-10">
-                            <p className="text-gray-400 m-3 mt-4 uppercase">
-                                Column Templates
-                            </p>
-                            {/* {columnTemplateItems.map((item) => (
-                                <ColumnTemplate key={item.id} data={item} />
-                            ))} */}
-                        </div>
-                        <div className="mt-10">
-                            <p className="text-gray-400 m-3 mt-4 uppercase">
-                                Theme Settings
-                            </p>
-
-                            <div>
-                                <ThemeSettings />
-                            </div>
+                        <div>
+                            <ThemeSettings />
                         </div>
                     </div>
                 </>

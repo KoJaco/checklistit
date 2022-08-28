@@ -33,7 +33,7 @@ module.exports = {
                 'main-bg': '#FAFBFB',
                 'main-dark-bg': '#011A27',
                 'secondary-dark-bg': '#063852',
-                'light-gray': '#a9a9a9',
+                'light-gray': '#F0F0F0',
                 'half-transparent': 'rgba(0, 0, 0, 0.5)',
                 'primary-bg': '#BD1E51',
                 'secondary-bg': '#F1B814',

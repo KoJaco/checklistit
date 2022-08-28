@@ -1,15 +1,8 @@
-// import dynamic from 'next/dynamic';
 import { useState } from 'react';
-
 import { Droppable } from 'react-beautiful-dnd';
-import { MdAdd } from 'react-icons/md';
 import Column from './Column';
 
-import type { Board, TaskId, ColumnId, Tasks, Columns } from './types';
-
-// const Column = dynamic(() => import('@/components/kanbanBoard/Column'), {
-//     ssr: false,
-// });
+import type { Board, TaskId, ColumnId } from '@/core/types/kanbanBoard';
 
 type KanbanProps = {
     title: string;
@@ -29,7 +22,7 @@ const Kanban = ({ boardState, ...props }: KanbanProps) => {
         <>
             <div className="flex flex-col bg-transparent h-screen w-full">
                 <div className="flex flex-row p-4 ml-2 mb-10">
-                    <p className="text-3xl text-left capitalize text-gray-500">
+                    <p className="text-3xl text-left capitalize text-gray-500 bg-transparent focus:border-none">
                         {props.title}
                     </p>
                     <div className=""></div>

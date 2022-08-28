@@ -1,10 +1,6 @@
 import React from 'react';
 import { AiOutlinePaperClip } from 'react-icons/ai';
-
-import { COLUMN_ITEM, COLUMN } from '@/core/constants/dragDropConsts';
 import ArrowIcon from '@/components/elements/ArrowIcon';
-
-const DROP_TARGETS = [COLUMN, COLUMN_ITEM];
 
 type ColumnTaskProps = {
     children?: JSX.Element;
@@ -12,11 +8,6 @@ type ColumnTaskProps = {
     text: string;
     editing: boolean;
 };
-
-interface Item {
-    id: string;
-    originalIndex: number;
-}
 
 const ColumnTask = ({ id, editing = false, ...props }: ColumnTaskProps) => {
     return (
