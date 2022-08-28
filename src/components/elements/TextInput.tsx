@@ -34,3 +34,5 @@ const TextInput = ({
         ></input>
     );
 };
+
+export default TextInput;
