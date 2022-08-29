@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { AiOutlinePaperClip } from 'react-icons/ai';
 import ArrowIcon from '@/components/elements/ArrowIcon';
+import Notification from '@/components/notification/Notification';
 
 type ColumnTaskProps = {
     children?: JSX.Element;
@@ -27,6 +28,8 @@ const ColumnTask = ({ id, editing = false, ...props }: ColumnTaskProps) => {
         setTaskContent(event.currentTarget.value);
     }
 
+    // dispatch task save and content back to reducer
+    // async:: generate new task object, save to BoardState, write to DB.
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
     }

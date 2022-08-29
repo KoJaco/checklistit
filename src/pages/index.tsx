@@ -3,6 +3,8 @@ import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
 import BaseLayout from '@/layouts/BaseLayout';
 
+import Notification from '@/components/notification/Notification';
+
 import {
     kanbanBoardMockData,
     kanbanBoardInitialData,
@@ -104,8 +106,18 @@ const Home: NextPage = () => {
         setBoardState(newState);
     };
     return (
-        <>
-            <BaseLayout>
+        <BaseLayout>
+            <>
+                {/* Global Notification component */}
+                <div className="fixed inset-0 flex justify-end items-start px-4 py-6 pointer-events-none sm:p-6 sm:items-start">
+                    <Notification
+                        show={true}
+                        variant="success"
+                        headerMessage="Task successfully saved!"
+                        contentMessage="hello"
+                    />
+                </div>
+
                 <main className="container mx-auto flex flex-col items-center justify-center h-screen p-10 dark:bg-main-dark-bg">
                     <div className="w-full h-auto mt-20 p-2">
                         {/* Kanban component */}
@@ -124,8 +136,8 @@ const Home: NextPage = () => {
                         </DragDropContext>
                     </div>
                 </main>
-            </BaseLayout>
-        </>
+            </>
+        </BaseLayout>
     );
 };
 
