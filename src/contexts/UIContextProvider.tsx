@@ -69,7 +69,6 @@ export function UIContextProvider(props: ContextProps) {
             // use local storage to store mode
             localStorage.setItem('colorMode', color);
         }
-
         // close theme settings after choosing theme color
         setThemeSettingsOpen(false);
     };

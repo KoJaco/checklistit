@@ -5,6 +5,7 @@ import { BsKanban } from 'react-icons/bs';
 import { IoColorPaletteOutline } from 'react-icons/io5';
 import { SiShopware } from 'react-icons/si';
 import { MdOutlineCancel } from 'react-icons/md';
+import clsx from 'clsx';
 
 import ThemeSettings from '@/components/themeSettings/ThemeSettings';
 import { useUIContext } from '@/contexts/UIContextProvider';
@@ -34,6 +35,8 @@ const Sidebar = (props: SidebarProps) => {
         console.log(`bg-[${currentColor.toLowerCase()}]`);
         return `bg-[${currentColor.toLowerCase()}]`;
     }
+
+    const aTagStyling = clsx();
 
     return (
         <div className="ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10">
@@ -71,16 +74,17 @@ const Sidebar = (props: SidebarProps) => {
 
                             <Link href="/" passHref={true}>
                                 <a
+                                    // Hydration error with null value
                                     style={{
                                         backgroundColor:
                                             currentRoute === '/'
                                                 ? currentColor
-                                                : '',
+                                                : 'bg-light-gray',
                                     }}
                                     className={
                                         currentRoute === '/'
                                             ? 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md m-2 text-gray-50 drop-shadow-md'
-                                            : 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2'
+                                            : 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 bg-transparent dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2'
                                     }
                                     onClick={handleCloseSidebar}
                                 >
@@ -92,15 +96,16 @@ const Sidebar = (props: SidebarProps) => {
                             <Link href="/board-1" passHref={true}>
                                 <a
                                     style={{
+                                        // Hydration error with null value
                                         backgroundColor:
                                             currentRoute === '/board-1'
                                                 ? currentColor
-                                                : '',
+                                                : 'bg-light-gray',
                                     }}
                                     className={
                                         currentRoute === '/board-1'
                                             ? 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md m-2 text-gray-50 drop-shadow-md'
-                                            : 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2'
+                                            : 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 bg-transparent dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2'
                                     }
                                     onClick={handleCloseSidebar}
                                 >

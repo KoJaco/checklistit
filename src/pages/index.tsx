@@ -3,7 +3,10 @@ import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
 import BaseLayout from '@/layouts/BaseLayout';
 
-import { kanbanBoardMockData } from '@/static/ts/initialData';
+import {
+    kanbanBoardMockData,
+    kanbanBoardInitialData,
+} from '@/static/ts/initialData';
 
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
@@ -112,7 +115,9 @@ const Home: NextPage = () => {
                             // onDragUpdate={onDragUpdate}
                         >
                             <Kanban
-                                title="Title"
+                                title={boardState.title}
+                                createdAt={boardState.createdAt}
+                                updatedAt={boardState.updatedAt}
                                 boardState={boardState}
                                 setBoardState={setBoardState}
                             />

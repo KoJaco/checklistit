@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { AiOutlinePaperClip } from 'react-icons/ai';
 import ArrowIcon from '@/components/elements/ArrowIcon';
 
@@ -10,35 +10,18 @@ type ColumnTaskProps = {
 };
 
 const ColumnTask = ({ id, editing = false, ...props }: ColumnTaskProps) => {
+    const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+    const handleTextAreaInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        if (textAreaRef.current) {
+            textAreaRef.current.style.height = 'auto';
+            textAreaRef.current.style.height = `${e.target.scrollHeight}px`;
+        }
+    };
+
     return (
-        // <li
-        //     // ref={preview}
-
-        //     className="p-2"
-        // >
-        <form action="#" className="relative">
-            <div className="py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-gray-50 overflow-hidden focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-slate-500 group">
-                {/* <label htmlFor="title" className="sr-only">
-                    Title
-                </label>
-                <div className="flex flex-row items-center">
-                    <input
-                        type="text"
-                        name="title"
-                        id="title"
-                        className="block w-full border-0 pt-2.5 text-lg font-medium text-slate-800 bg-gray-50 placeholder-gray-500 focus:outline-none"
-                        placeholder="Title"
-                    />
-                    <div
-                        className="block p-2 text-gray-500 cursor-move focus:cursor-move"
-                        // ref={(node) => drag(drop(node))}
-                        // ref={drag}
-                    >
-                        <MdDragIndicator />
-                    </div>
-                </div> */}
-
-                <div className="flex"></div>
+        <form action="#" className="">
+            <div className="py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-gray-50 focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-slate-500 group h-full">
                 <label htmlFor="description" className="sr-only">
                     Description
                 </label>
@@ -57,11 +40,13 @@ const ColumnTask = ({ id, editing = false, ...props }: ColumnTaskProps) => {
                     <div>{props.children}</div>
                 </div>
                 <textarea
-                    rows={2}
+                    ref={textAreaRef}
+                    rows={1}
                     name="description"
                     id="description"
-                    className="border-0 w-full my-2 resize-none bg-gray-50 text-gray-500 focus:ring-0 sm:text-md focus:outline-none placeholder:italic placeholder:text-gray-500/[0.5] focus:resize-y"
+                    className="border-0 w-full mb-2 resize-none no-scrollbar bg-gray-50 text-gray-500 focus:ring-0 sm:text-md focus:outline-none placeholder:italic placeholder:text-gray-500/[0.5] focus:resize-y"
                     placeholder="Start writing..."
+                    onInput={handleTextAreaInput}
                     defaultValue={props.text}
                 />
                 {/* Spacer Element, show when editing or 'focused' */}

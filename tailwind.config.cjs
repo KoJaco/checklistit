@@ -165,6 +165,10 @@ module.exports = {
     plugins: [
         plugin(function ({ addComponents, addUtilities }) {
             addUtilities({
+                '.rounded-scrollbar::-webkit-scrollbar': {
+                    'border-radius': '10px',
+                    background: 'transparent',
+                },
                 '.no-scrollbar::-webkit-scrollbar': {
                     display: 'none',
                 },

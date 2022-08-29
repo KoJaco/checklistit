@@ -6,6 +6,8 @@ import type { Board, TaskId, ColumnId } from '@/core/types/kanbanBoard';
 
 type KanbanProps = {
     title: string;
+    createdAt: string;
+    updatedAt: string;
     setBoardState: (state: any) => void;
     boardState: Board;
 };
