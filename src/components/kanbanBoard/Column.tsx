@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Droppable } from 'react-beautiful-dnd';
 
-import { MdDragIndicator } from 'react-icons/md';
+import { MdDragIndicator, MdAdd } from 'react-icons/md';
 import { RgbaColorPicker } from 'react-colorful';
 
 import ColumnTask from './ColumnTask';
@@ -112,6 +112,7 @@ const Column = ({ children, ...props }: ColumnProps) => {
                                                 <ColumnTask
                                                     id={index}
                                                     text={task.content}
+                                                    taskCount={6}
                                                     editing={false}
                                                 >
                                                     <div
@@ -125,7 +126,14 @@ const Column = ({ children, ...props }: ColumnProps) => {
                                     </Draggable>
                                 ))}
                                 {droppableProvided.placeholder}
-                                {/* {children} */}
+                                <div className="flex my-2 w-full h-auto justify-end">
+                                    <button
+                                        className="bg-transparent hover:scale-110 text-gray-500 transition-transform duration-300"
+                                        // onClick={() => handleAddTask(column.id)}
+                                    >
+                                        <MdAdd className="w-5 h-5 text-gray-500 dark:text-gray-50" />
+                                    </button>
+                                </div>
                             </div>
                         )}
                     </Droppable>

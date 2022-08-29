@@ -1,0 +1,217 @@
+import {
+    ReactNode,
+    createContext,
+    useReducer,
+    useMemo,
+    useContext,
+} from 'react';
+
+import type {
+    TTask,
+    TColumn,
+    Board,
+    Tasks,
+    Columns,
+    ColumnOrder,
+} from '@/core/types/kanbanBoard';
+
+import { kanbanBoardMockData } from '@/static/ts/initialData';
+
+// Main context for quick-notes
+const TaskBoardContext = createContext<any>(null);
+
+// Set custom name for the context which is invisible on react dev tools.
+TaskBoardContext.displayName = 'TaskBoardContext';
+
+// types
+type TaskBoardState = {
+    title: string;
+    createdAt: string;
+    updatedAt: string;
+    columns: Columns;
+    currentColumnId: string;
+    tasks: Tasks;
+    currentTaskId: string;
+    columnOrder: ColumnOrder;
+};
+
+interface Action {
+    type:
+        | 'SET_BOARD_TITLE'
+        | 'SET_CREATED_AT'
+        | 'SET_UPDATED_AT'
+        | 'SET_COLUMNS'
+        | 'SET_CURRENT_COLUMN_ID'
+        | 'SET_TASKS'
+        | 'SET_CURRENT_TASK_ID'
+        | 'RESET';
+    value: any;
+}
+
+export const initialValues = {
+    title: 'Weekly Work',
+    createdAt: '29/08/2022, 09:37:01',
+    updatedAt: '29/08/2022, 14:12:15',
+    currentTaskId: 'task-1',
+    tasks: {
+        'task-1': { id: 1, content: 'Configure Next.js application' },
+        'task-2': {
+            id: 2,
+            content: 'Configure Next.js and tailwind ',
+        },
+        'task-3': {
+            id: 3,
+            content: 'Create sidebar navigation menu',
+        },
+        'task-4': { id: 4, content: 'Create page footer' },
+        'task-5': { id: 5, content: 'Create page navigation menu' },
+        'task-6': { id: 6, content: 'Create page layout' },
+    },
+    currentColumnId: 'column-1',
+    columns: {
+        'column-1': {
+            id: 'column-1',
+            title: 'To Do',
+            bgColor: '',
+            taskIds: [
+                'task-1',
+                'task-2',
+                'task-3',
+                'task-4',
+                'task-5',
+                'task-6',
+            ],
+        },
+        'column-2': {
+            id: 'column-2',
+            title: 'In Progress',
+            bgColor: '',
+            taskIds: [],
+        },
+        'column-3': {
+            id: 'column-3',
+            title: 'Complete',
+            bgColor: '',
+            taskIds: [],
+        },
+    },
+    // Facilitate reordering of the columns
+    columnOrder: ['column-1', 'column-2', 'column-3'],
+};
+
+// State reducer
+function reducer(state: TaskBoardState, action: Action) {
+    switch (action.type) {
+        case 'SET_BOARD_TITLE': {
+            return { ...state, title: action.value };
+        }
+        case 'SET_CREATED_AT': {
+            return { ...state, createdAt: action.value };
+        }
+        case 'SET_UPDATED_AT': {
+            return { ...state, updatedAt: action.value };
+        }
+        case 'SET_COLUMNS': {
+            return { ...state, columns: action.value };
+        }
+        case 'SET_CURRENT_COLUMN_ID': {
+            return { ...state, currentColumnId: action.value };
+        }
+        case 'SET_TASKS': {
+            return { ...state, tasks: action.value };
+        }
+        case 'SET_CURRENT_TASK_ID': {
+            return { ...state, currentTaskId: action.value };
+        }
+        case 'RESET': {
+            return initialValues;
+        }
+        default: {
+            throw new Error(`Unhandled action type: ${action.type}`);
+        }
+    }
+}
+
+function TaskBoardContextProvider({
+    children,
+}: {
+    children: ReactNode;
+}): JSX.Element {
+    const [controller, dispatch] = useReducer(reducer, initialValues);
+
+    const value = useMemo(() => [controller, dispatch], [controller, dispatch]);
+
+    return (
+        <TaskBoardContext.Provider value={value}>
+            {children}
+        </TaskBoardContext.Provider>
+    );
+}
+
+// custom hook for using context
+function useTaskBoardContext() {
+    const context = useContext(TaskBoardContext);
+
+    if (!context) {
+        throw new Error(
+            'useCheckListItController should be used inside of CheckListItControllerProvider'
+        );
+    }
+
+    return context;
+}
+
+// context module functions
+
+const setBoardTitle = (
+    dispatch: (arg: { type: 'SET_BOARD_TITLE'; value: string }) => void,
+    value: string
+) => dispatch({ type: 'SET_BOARD_TITLE', value });
+
+const setCreatedAt = (
+    dispatch: (arg: { type: 'SET_CREATED_AT'; value: string }) => void,
+    value: string
+) => dispatch({ type: 'SET_CREATED_AT', value });
+
+const setUpdatedAt = (
+    dispatch: (arg: { type: 'SET_UPDATED_AT'; value: string }) => void,
+    value: string
+) => dispatch({ type: 'SET_UPDATED_AT', value });
+
+const setColumns = (
+    dispatch: (arg: { type: 'SET_COLUMNS'; value: TColumn }) => void,
+    value: TColumn
+) => dispatch({ type: 'SET_COLUMNS', value });
+
+const setCurrentColumnId = (
+    dispatch: (arg: { type: 'SET_CURRENT_COLUMN_ID'; value: string }) => void,
+    value: string
+) => dispatch({ type: 'SET_CURRENT_COLUMN_ID', value });
+
+const setTasks = (
+    dispatch: (arg: { type: 'SET_TASKS'; value: TTask }) => void,
+    value: TTask
+) => dispatch({ type: 'SET_TASKS', value });
+
+const setCurrentTaskId = (
+    dispatch: (arg: { type: 'SET_CURRENT_TASK_ID'; value: string }) => void,
+    value: string
+) => dispatch({ type: 'SET_CURRENT_TASK_ID', value });
+
+const reset = (
+    dispatch: (arg: { type: 'RESET'; value: typeof initialValues }) => void,
+    value: typeof initialValues
+) => dispatch({ type: 'RESET', value });
+
+export {
+    TaskBoardContextProvider,
+    useTaskBoardContext,
+    setBoardTitle,
+    setCreatedAt,
+    setUpdatedAt,
+    setColumns,
+    setCurrentTaskId,
+    setCurrentColumnId,
+    setTasks,
+    reset,
+};

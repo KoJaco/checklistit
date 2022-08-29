@@ -1,3 +1,4 @@
+import { useReducer } from 'react';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
@@ -10,6 +11,8 @@ import {
     kanbanBoardInitialData,
 } from '@/static/ts/initialData';
 
+import type { TTask, TColumn, Columns, Tasks } from '@/core/types/kanbanBoard';
+
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
 const Kanban = dynamic(() => import('@/components/kanbanBoard/Kanban'), {
@@ -17,14 +20,14 @@ const Kanban = dynamic(() => import('@/components/kanbanBoard/Kanban'), {
 });
 
 const Home: NextPage = () => {
-    const [boardState, setBoardState] = useState(kanbanBoardMockData);
-    const [isCSR, setIsCSR] = useState(false);
+    // const [boardState, dispatch] = useReducer(reducer, initialValues);
 
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            setIsCSR(true);
-        }
-    }, []);
+    const [boardState, setBoardState] = useState(kanbanBoardMockData);
+    // const { tasks, columns, columnOrder } = boardState;
+    // const [currentTaskId, setCurrentTaskId] = useState('task-1');
+    // const [currentColumnId, setCurrentColumnId] = useState('column-1');
+
+    console.log(boardState);
 
     const onDragEnd = (result: DropResult) => {
         const { destination, source, draggableId, type } = result;
@@ -105,6 +108,39 @@ const Home: NextPage = () => {
         };
         setBoardState(newState);
     };
+
+    function handleAddTask(task: TTask, columnId: string) {}
+
+    function handleRemoveTask(task: TTask, columnId: string) {}
+
+    function handleAddColumn(column: TColumn) {}
+
+    // function removeColumn(columnId: string) {
+    //     console.log('function hit');
+    //     // select column to be deleted
+    //     const column = boardState.columns[columnId];
+    //     let newColumnOrder = Array.from(boardState.columnOrder);
+    //     // find all tasks belonging to that column
+    //     const taskIds = Array.from(column.taskIds);
+    //     if (taskIds.length === 0) {
+    //         let columnKeys = Object.keys(boardState.columns);
+    //         let newColumns: Columns = {};
+    //         console.log(newColumns);
+    //         columnKeys.forEach((key) => {
+    //             if (key !== columnId) {
+    //                 newColumns[key] = boardState.columns[key];
+    //             }
+    //         });
+    //         const newState = {
+    //             ...boardState,
+    //             columns: newColumns,
+    //         };
+    //         newColumnOrder.filter((id) => id === columnId);
+
+    //         setBoardState(newState);
+    //     }
+    // }
+
     return (
         <BaseLayout>
             <>
@@ -133,6 +169,9 @@ const Home: NextPage = () => {
                                 boardState={boardState}
                                 setBoardState={setBoardState}
                             />
+                            {/* <button onClick={() => removeColumn('column-3')}>
+                                Delete
+                            </button> */}
                         </DragDropContext>
                     </div>
                 </main>

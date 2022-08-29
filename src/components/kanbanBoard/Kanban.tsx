@@ -13,12 +13,20 @@ type KanbanProps = {
 };
 
 const Kanban = ({ boardState, ...props }: KanbanProps) => {
-    // change styling and focus based on selected column, default to 0
-    const [selectedColumn, setSelectedColumn] = useState(0);
+    // change styling based on currentColumn, allow selecting color by keeping track of this state.
+    const [currentColumnId, setCurrentColumnId] = useState(1);
+    // need columnCount to change column styling based on count, need arrow or horizontal scroll to get to next column on mobile.
+    const [columnCount, setColumnCount] = useState(1);
 
-    function getSelectedColumnId(index: number) {
-        return `column-${selectedColumn}`;
+    function parseCurrentColumnId(index: number) {
+        return `column-${currentColumnId}`;
     }
+
+    // const inputAction = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     dispatch({
+    //         type: 'SET_TITLE',
+    //     });
+    // };
 
     return (
         <>
@@ -56,17 +64,6 @@ const Kanban = ({ boardState, ...props }: KanbanProps) => {
                                             tasks={tasks}
                                             index={index}
                                         />
-                                        /* <div className="flex my-5 w-full justify-center">
-                                                <button
-                                                    className="rounded-lg p-3 bg-transparent hover:scale-110 hover:drop-shadow-lg text-gray-500 transition-transform duration-300"
-                                                    onClick={() =>
-                                                        handleAddTask(column.id)
-                                                    }
-                                                >
-                                                    <MdAdd />
-                                                </button>
-                                            </div> */
-                                        // </Column>
                                     );
                                 }
                             )}
