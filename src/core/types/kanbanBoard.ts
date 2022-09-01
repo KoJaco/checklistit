@@ -1,23 +1,31 @@
 export type TTask = {
+    // incremental positive integer, will need to track task count.
     id: number;
+    // user input
     content: string;
 };
 
 export interface Tasks {
-    [id: string]: TTask;
+    // accessing non-existing property results in undefined, difference between runtime and and compilation inference.
+    // key should be in form 'task-<x>' where x is a unique positive integer.
+    [key: string]: TTask | undefined;
 }
 
 export type TaskId = keyof Tasks;
 
 export type TColumn = {
+    // change this to number?
     id: string;
+    // user input
     title: string;
+    // must set a default value of 'transparent'
     bgColor: string;
     taskIds: string[];
 };
 
 export interface Columns {
-    [id: string]: TColumn;
+    // key should be in form 'column-<x>' where x is a unique positive integer.
+    [key: string]: TColumn | undefined;
 }
 
 export type ColumnId = keyof Columns;
@@ -25,22 +33,22 @@ export type ColumnId = keyof Columns;
 export type ColumnOrder = Array<keyof Columns>;
 
 export interface Board {
-    // direct data
+    // auto-generated id
+    id: string;
+    // direct data, set by the user to instantiate a new board.
     title: string;
+    // auto generated upon instantiation.
     createdAt: string;
+    // auto generated per mutation.
     updatedAt: string;
+    // nested objects indexed by '<task/column>-x', where x is a unique positive integer.
     tasks: Tasks;
     columns: Columns;
+    // column order with types explicitly specified as keyof columns
     columnOrder: ColumnOrder;
 }
 
-export interface DbBoard {
-    // direct data
-    title: string;
-    createdAt: string;
-    updatedAt: string;
-    // nested objects
-    tasks: Tasks;
-    columns: Columns;
-    columnOrder: ColumnOrder;
+export interface Boards {
+    // index signature with key: string, value: Board
+    [key: string]: Board | undefined;
 }

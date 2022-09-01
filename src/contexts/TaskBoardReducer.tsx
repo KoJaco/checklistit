@@ -178,15 +178,15 @@ export const initialValues = {
 // State reducer
 export const reducer = (state: TaskBoardState, action: Action) => {
     switch (action.type) {
-        case 'SET_BOARD_STATE': {
-            return { ...state, [action.payload.key]: action.payload.value };
-        }
+        // case 'SET_BOARD_STATE': {
+        //     return { ...state, [action.payload.key]: action.payload.value };
+        // }
         case 'SET_BOARD_TITLE': {
             return { ...state, [action.payload.key]: action.payload.value };
         }
-        case 'SET_COLUMN_TITLE': {
-            return { ...state, [action.payload.key]: action.payload.value };
-        }
+        // case 'SET_COLUMN_TITLE': {
+        //     return { ...state, [action.payload.key]: action.payload.value };
+        // }
         case 'SET_CURRENT_TASK_ID': {
             return { ...state, [action.payload.key]: action.payload.value };
         }

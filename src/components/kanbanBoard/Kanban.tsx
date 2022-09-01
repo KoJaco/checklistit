@@ -31,11 +31,14 @@ const Kanban = ({ boardState, ...props }: KanbanProps) => {
     return (
         <>
             <div className="flex flex-col bg-transparent h-screen w-full">
-                <div className="flex flex-row p-4 ml-2 mb-10">
-                    <p className="text-3xl text-left capitalize text-gray-500 bg-transparent focus:border-none">
+                <div className="flex flex-row p-4 ml-2 mb-10 items-center">
+                    <p className="text-3xl capitalize text-gray-500 bg-transparent focus:border-none mr-auto">
                         {props.title}
                     </p>
-                    <div className=""></div>
+
+                    <button className="bg-green-500 p-1 w-12 text-gray-50 rounded-lg">
+                        save
+                    </button>
                 </div>
                 <Droppable
                     droppableId="columns"

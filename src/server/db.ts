@@ -1,12 +1,15 @@
 import Dexie, { Table } from 'dexie';
-import type { Board } from '@/core/types/kanbanBoard';
+import { Boards } from '@/core/types/kanbanBoard';
 
-export interface Boards {
-    [id: string]: Board;
+export class KanbanBoardDexie extends Dexie {
+    boards!: Table<Boards>;
+
+    constructor() {
+        super('checklistitDB');
+        this.version(1).stores({
+            boards: '++id, title, updatedAt', // primary key and indexed props
+        });
+    }
 }
 
-export interface KanbanBoard {
-    boards: Boards;
-}
-
-export class KanbanBoardDexie extends Dexie {}
+export const db = new KanbanBoardDexie();

@@ -3,6 +3,7 @@
 // }
 
 export const kanbanBoardMockData = {
+    id: 'board-1',
     title: 'Weekly work',
     createdAt: '29/08/2022, 09:37:01',
     updatedAt: '29/08/2022, 14:12:15',

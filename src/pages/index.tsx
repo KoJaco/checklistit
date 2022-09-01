@@ -4,12 +4,7 @@ import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
 import BaseLayout from '@/layouts/BaseLayout';
 
-import Notification from '@/components/notification/Notification';
-
-import {
-    kanbanBoardMockData,
-    kanbanBoardInitialData,
-} from '@/static/ts/initialData';
+import { kanbanBoardMockData } from '@/static/ts/initialData';
 
 import type { TTask, TColumn, Columns, Tasks } from '@/core/types/kanbanBoard';
 
@@ -20,12 +15,7 @@ const Kanban = dynamic(() => import('@/components/kanbanBoard/Kanban'), {
 });
 
 const Home: NextPage = () => {
-    // const [boardState, dispatch] = useReducer(reducer, initialValues);
-
     const [boardState, setBoardState] = useState(kanbanBoardMockData);
-    // const { tasks, columns, columnOrder } = boardState;
-    // const [currentTaskId, setCurrentTaskId] = useState('task-1');
-    // const [currentColumnId, setCurrentColumnId] = useState('column-1');
 
     console.log(boardState);
 
@@ -144,24 +134,10 @@ const Home: NextPage = () => {
     return (
         <BaseLayout>
             <>
-                {/* Global Notification component */}
-                <div className="fixed inset-0 flex justify-end items-start px-4 py-6 pointer-events-none sm:p-6 sm:items-start">
-                    <Notification
-                        show={true}
-                        variant="success"
-                        headerMessage="Task successfully saved!"
-                        contentMessage="hello"
-                    />
-                </div>
-
                 <main className="container mx-auto flex flex-col items-center justify-center h-screen p-10 dark:bg-main-dark-bg">
                     <div className="w-full h-auto mt-20 p-2">
                         {/* Kanban component */}
-                        <DragDropContext
-                            onDragEnd={onDragEnd}
-                            // onDragStart={onDragStart}
-                            // onDragUpdate={onDragUpdate}
-                        >
+                        <DragDropContext onDragEnd={onDragEnd}>
                             <Kanban
                                 title={boardState.title}
                                 createdAt={boardState.createdAt}
@@ -169,9 +145,6 @@ const Home: NextPage = () => {
                                 boardState={boardState}
                                 setBoardState={setBoardState}
                             />
-                            {/* <button onClick={() => removeColumn('column-3')}>
-                                Delete
-                            </button> */}
                         </DragDropContext>
                     </div>
                 </main>

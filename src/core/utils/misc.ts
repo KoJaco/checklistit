@@ -8,3 +8,7 @@ export const arrayToObject = (array: Array<any>) =>
         obj[item._id] = item;
         return obj;
     }, {});
+
+// export const generateTask = (task) => ({
+//     id:
+// })
