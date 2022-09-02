@@ -32,16 +32,18 @@ const Sidebar = (props: SidebarProps) => {
         }
     };
 
-    // change this to async, user defined... can be only recents, all, reverse order, etc.
+    // change this to async, user defined... can be recent boards given number, all, reverse order, specific tags, etc.
 
     const boards = useLiveQuery(
-        () => db.boards.orderBy('updatedAt').reverse().toArray(),
+        () => db.getAllBoards(true),
+        // () => db.boards.orderBy('updatedAt').reverse().toArray(),
         [boardCount] //we should retrieve whenever board count is updated
     );
 
     const initialBoardCount = useLiveQuery(() => db.boards.count());
 
     useEffect(() => {
+        // board count is also updated in the CreateBoardForm component, and also when boards are deleted.
         initialBoardCount !== undefined && setBoardCount(initialBoardCount);
     }, [initialBoardCount, setBoardCount]);
 
@@ -171,7 +173,7 @@ const Sidebar = (props: SidebarProps) => {
                                 <IoColorPaletteOutline className="w-5 h-5" />
                             </span>
                             <p className="text-gray-400 mr-4 font-regular uppercase">
-                                Theme and Colours
+                                Theme and Settings
                             </p>
                         </div>
                         <div>

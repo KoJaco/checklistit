@@ -1,8 +1,9 @@
 import Dexie, { Table } from 'dexie';
 import { Board, TColumn, TTask } from '@/core/types/kanbanBoard';
-import { stringToSlug } from '@/core/utils/kanbanBoard';
+import { stringToRandomSlug } from '@/core/utils/misc';
 
 // https://dexie.org/docs/Version/Version.stores()
+// https://dexie.org/docs/Table/Table.update()
 
 export class KanbanBoardDexie extends Dexie {
     boards!: Table<Board>;
@@ -49,7 +50,7 @@ export class KanbanBoardDexie extends Dexie {
         return this.boards.add({
             title: boardTitle,
             tag: boardTag,
-            slug: stringToSlug(boardTitle),
+            slug: stringToRandomSlug(boardTitle),
             createdAt: new Date(Date.now()).toLocaleString(),
             updatedAt: new Date(Date.now()).toLocaleString(),
             tasks: { 'task-1': { id: 1, content: '' } },
@@ -65,15 +66,21 @@ export class KanbanBoardDexie extends Dexie {
         });
     }
 
-    updateBoard(board: Board) {}
+    deleteBoard(boardId: number) {
+        return this.transaction('rw', this.boards, () => {
+            this.boards.delete(boardId);
+        });
+    }
 
     addColumn(columnId: string) {}
 
-    updateColumn(column: TColumn) {}
-
-    updateTask(task: TTask) {}
-
     addTask(taskId: number, taskContent: string) {}
+}
+
+export function resetDatabase() {
+    return db.transaction('rw', db.boards, async () => {
+        await Promise.all(db.tables.map((table) => table.clear()));
+    });
 }
 
 export const db = new KanbanBoardDexie();
