@@ -1,8 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { AiOutlinePaperClip, AiOutlineDelete } from 'react-icons/ai';
 import ArrowIcon from '@/components/elements/ArrowIcon';
-
-import clsx from 'clsx';
+import { useKanbanBoardStore } from '@/contexts/KanbanBoardStore';
 
 type ColumnTaskProps = {
     children?: JSX.Element;
@@ -16,6 +15,9 @@ const ColumnTask = ({ id, editing = false, ...props }: ColumnTaskProps) => {
     // Controlled text area input, save button submits the form and affects DB + boardState
     const [taskContent, setTaskContent] = useState<string>('');
     const [isEditing, setIsEditing] = useState<boolean>(false);
+
+    const taskCount = useKanbanBoardStore((state) => state.taskCount);
+
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
@@ -64,7 +66,10 @@ const ColumnTask = ({ id, editing = false, ...props }: ColumnTaskProps) => {
                 </label>
                 <div className="opacity-0 flex flex-row justify-between w-full items-center group-hover:opacity-100 group-hover:py-2 group-hover:mb-6 transition-all duration-1000">
                     <div className="flex">
-                        <button className="w-5 h-5 rounded-md hover:bg-red-600 cursor-pointer text-gray-500 hover:text-gray-50 flex items-center justify-center transition-color duration-300">
+                        <button
+                            className="w-5 h-5 rounded-md hover:bg-red-600 cursor-pointer text-gray-500 hover:text-gray-50 flex items-center justify-center transition-color duration-300 disabled:text-gray-500/[0.5] disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                            disabled={taskCount === 1 ? true : false}
+                        >
                             <AiOutlineDelete className="w-4 h-4" />
                         </button>
                     </div>

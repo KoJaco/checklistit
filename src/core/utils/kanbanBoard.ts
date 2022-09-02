@@ -3,7 +3,7 @@ import { Board } from '@/core/types/kanbanBoard';
 
 export function initializeBoard(currentTime: string): Board {
     return {
-        id: nanoid(),
+        // id: nanoid(),
         title: '',
         createdAt: currentTime,
         updatedAt: currentTime,

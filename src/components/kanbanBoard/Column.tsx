@@ -1,14 +1,16 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Droppable } from 'react-beautiful-dnd';
 
-import { MdDragIndicator, MdAdd } from 'react-icons/md';
+import { MdDragIndicator, MdAdd, MdBrush } from 'react-icons/md';
 import { RgbaColorPicker } from 'react-colorful';
 
 import ColumnTask from './ColumnTask';
-
 import type { TColumn, TTask } from '@/core/types/kanbanBoard';
 import { useOnClickOutside } from '@/core/hooks';
+import { useKanbanBoardStore } from '@/contexts/KanbanBoardStore';
+
+import clsx from 'clsx';
 
 type ColumnProps = {
     column: TColumn | undefined;
@@ -18,19 +20,23 @@ type ColumnProps = {
     children?: JSX.Element;
 };
 
-const Column = ({ children, ...props }: ColumnProps) => {
+const Column = ({ children, column, tasks, ...props }: ColumnProps) => {
     const [color, setColor] = useState<{
         r: number;
         g: number;
         b: number;
         a: number;
     }>({ r: 250, g: 250, b: 250, a: 0 });
-    const [showColorPicker, setShowColorPicker] = useState(false);
+
+    const {
+        showColorPicker,
+        setShowColorPicker,
+        toggleShowColorPicker,
+        columnCount,
+    } = useKanbanBoardStore();
 
     const colorPickerRef = useRef(null);
-    useOnClickOutside(colorPickerRef, () => setShowColorPicker(false));
-
-    const { column, tasks } = props;
+    useOnClickOutside(colorPickerRef, () => handleShowColorPicker(false));
 
     function parsedColor(color: {
         r: number;
@@ -41,9 +47,9 @@ const Column = ({ children, ...props }: ColumnProps) => {
         return `rgba(${color.r},${color.g},${color.b},${color.a})`;
     }
 
-    function handleShowColorPicker() {
-        // will always be setting to true, clickOutside handles closing color picker.
-        setShowColorPicker(!showColorPicker);
+    function handleShowColorPicker(value: boolean) {
+        // this should async saved the bg color to DB
+        setShowColorPicker(value);
     }
 
     return (
@@ -54,6 +60,19 @@ const Column = ({ children, ...props }: ColumnProps) => {
                     {...draggableProvided.draggableProps}
                     ref={draggableProvided.innerRef}
                 >
+                    {/* colour picker component, fixed to bottom of screen */}
+                    {showColorPicker && (
+                        <div
+                            ref={colorPickerRef}
+                            className="fixed bottom-12 right-12 drop-shadow-lg hover:scale-110 transition-all duration-500"
+                        >
+                            <RgbaColorPicker
+                                className="w-28 h-28"
+                                color={color}
+                                onChange={setColor}
+                            ></RgbaColorPicker>
+                        </div>
+                    )}
                     <div
                         className="flex justify-between items-center w-full bg-transparent p-2 ml-2"
                         {...draggableProvided.dragHandleProps}
@@ -63,26 +82,23 @@ const Column = ({ children, ...props }: ColumnProps) => {
                         </h1>
                         <div className="flex justify-right mr-4">
                             <button
-                                className="rounded-md border-1 w-5 h-5 drop-shadow-md"
-                                style={{ backgroundColor: parsedColor(color) }}
-                                onClick={handleShowColorPicker}
+                                className={clsx(
+                                    'rounded-md border-1 border-gray-300 p-1 drop-shadow-md',
+                                    showColorPicker &&
+                                        'scale-110 transition-transform duration-300 drop-shadow-lg '
+                                )}
+                                style={{
+                                    backgroundColor: parsedColor(color),
+                                }}
+                                onClick={toggleShowColorPicker}
                                 // disable when selecting color, let useOnClickOutside handle close
                                 disabled={showColorPicker ? true : false}
-                            ></button>
+                            >
+                                <MdBrush className="w-5 h-5 text-gray-50 hover:text-gray-500 transition-colors duration-500" />
+                            </button>
                         </div>
                     </div>
-                    {showColorPicker && (
-                        <div
-                            ref={colorPickerRef}
-                            className="flex justify-end items-center mr-4"
-                        >
-                            <RgbaColorPicker
-                                className="w-28 h-28 flex justify-end"
-                                color={color}
-                                onChange={setColor}
-                            ></RgbaColorPicker>
-                        </div>
-                    )}
+
                     {/* Indicated that column will NEVER be undefined */}
                     <Droppable droppableId={column!.id} type="task">
                         {(droppableProvided, droppableSnapshot) => (

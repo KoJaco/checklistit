@@ -34,7 +34,7 @@ export type ColumnOrder = Array<keyof Columns>;
 
 export interface Board {
     // auto-generated id
-    id: string;
+    // id: string;
     // direct data, set by the user to instantiate a new board.
     title: string;
     // optional tag for categorising boards
