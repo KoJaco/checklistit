@@ -9,6 +9,6 @@ export const arrayToObject = (array: Array<any>) =>
         return obj;
     }, {});
 
-// export const generateTask = (task) => ({
-//     id:
-// })
+export function parseBgColor(color: string) {
+    return `bg-[${color.toLowerCase()}]`;
+}

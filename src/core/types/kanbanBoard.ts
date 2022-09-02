@@ -37,6 +37,7 @@ export interface Board {
     // id: string;
     // direct data, set by the user to instantiate a new board.
     title: string;
+    slug: string;
     // optional tag for categorising boards
     tag?: string;
     // auto generated upon instantiation.

@@ -19,7 +19,7 @@ const Home: NextPage = () => {
         return initializeBoard(new Date(Date.now()).toLocaleDateString());
     });
 
-    console.log(boardState);
+    // console.log(boardState);
 
     const onDragEnd = (result: DropResult) => {
         const { destination, source, draggableId, type } = result;

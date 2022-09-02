@@ -3,6 +3,7 @@ import create from 'zustand';
 // *** Store is simply for keeping track of import values relating to server-client state, use react-query with dexie to maintain server-client board state.
 
 export type State = {
+    boardCount: number | undefined;
     columnCount: number;
     taskCount: number;
     currentColumnId: string;
@@ -10,8 +11,9 @@ export type State = {
     showColorPicker: boolean;
     showNotification: boolean;
 
-    increaseColumnCount: () => void;
-    decreaseColumnCount: () => void;
+    setBoardCount: (count: number) => void;
+    increaseBoardCount: () => void;
+    decreaseBoardCount: () => void;
     increaseTaskCount: () => void;
     decreaseTaskCount: () => void;
     resetCounts: () => void;
@@ -26,6 +28,7 @@ export type State = {
 export const useKanbanBoardStore = create<State>((set) => ({
     // on board creation there should always be 1 column and 1 task
     // deleting this last task/column is not allowed
+    boardCount: undefined,
     columnCount: 1,
     taskCount: 1,
     currentColumnId: 'column-1',
@@ -33,7 +36,22 @@ export const useKanbanBoardStore = create<State>((set) => ({
     showColorPicker: false,
     showNotification: false,
 
+    setBoardCount: (count: number) => {
+        set(() => ({ boardCount: count }));
+    },
     // counts
+    increaseBoardCount: () =>
+        set((state) => ({
+            boardCount:
+                state.boardCount !== undefined ? state.boardCount + 1 : 1,
+        })),
+    decreaseBoardCount: () =>
+        set((state) => ({
+            boardCount:
+                state.boardCount !== undefined
+                    ? state.boardCount - 1
+                    : state.boardCount,
+        })),
     increaseColumnCount: () =>
         set((state) => ({ columnCount: state.columnCount + 1 })),
     decreaseColumnCount: () =>

@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { useOnClickOutside } from '@/core/hooks/index';
+import { Board } from '@/core/types/kanbanBoard';
+import { useKanbanBoardStore } from '@/contexts/KanbanBoardStore';
+import { db } from '@/server/db';
 
-const CreateBoardForm = () => {
+type CreateBoardFormProps = {
+    setOpen: (value: boolean) => void;
+};
+
+const CreateBoardForm = ({ setOpen }: CreateBoardFormProps) => {
     // keep track of local state, upon save add the board to db.
     const [state, setState] = useState<{
         boardTitle: string;
         boardTag: string;
         columnTitles: string[];
     }>({ boardTitle: '', boardTag: '', columnTitles: [''] });
+
+    const { boardCount, increaseBoardCount } = useKanbanBoardStore();
+
+    const createBoardFormRef = useRef(null);
+    useOnClickOutside(createBoardFormRef, () => setOpen(false));
 
     function handleUserInput(event: React.ChangeEvent<HTMLInputElement>) {
         const value = event.currentTarget.value;
@@ -16,9 +29,33 @@ const CreateBoardForm = () => {
         });
     }
 
+    function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
+        event.preventDefault();
+        createBoard(state.boardTitle, state.boardTag);
+        increaseBoardCount();
+        setOpen(false);
+    }
+
+    const createBoard = async (title: string, tag: string) => {
+        try {
+            db.addBoard(title, tag);
+            console.info(
+                `A new board was created with title: ${title} and tag: ${tag}`
+            );
+        } catch (error) {
+            console.error(`Failed to add board`);
+        }
+    };
+
     return (
-        <form className="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
-            <div className="flex items-center p-10 bg-gray-50 rounded-lg drop-shadow-lg w-1/2">
+        <form
+            className="flex min-h-full items-center justify-center p-4 text-center"
+            onSubmit={handleSubmit}
+        >
+            <div
+                ref={createBoardFormRef}
+                className="flex items-center p-10 bg-gray-50 rounded-lg drop-shadow-lg w-1/2"
+            >
                 <div className="mt-1 flex flex-col w-full">
                     <div className="flex mb-10">
                         <h1 className="text-2xl text-gray-700">
@@ -61,7 +98,21 @@ const CreateBoardForm = () => {
                             />
                         </div>
                     </div>
-                    <div className="mt-10"></div>
+                    <div className="flex flex-row justify-end mt-10">
+                        {/* <button
+                            className="px-4 py-2 bg-gradient-to-r from-slate-300 to-slate-400 rounded-lg text-gray-50 drop-shadow-md transition-transform hover:scale-105 duration-500"
+                            onClick={() => {}}
+                        >
+                            Cancel
+                        </button> */}
+
+                        <button
+                            className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 rounded-lg text-gray-50 drop-shadow-md transition-transform hover:scale-105 duration-500"
+                            type="submit"
+                        >
+                            Save
+                        </button>
+                    </div>
                 </div>
             </div>
         </form>

@@ -1,5 +1,6 @@
 import Dexie, { Table } from 'dexie';
-import { Boards, Board, TColumn, TTask } from '@/core/types/kanbanBoard';
+import { Board, TColumn, TTask } from '@/core/types/kanbanBoard';
+import { stringToSlug } from '@/core/utils/kanbanBoard';
 
 // https://dexie.org/docs/Version/Version.stores()
 
@@ -9,7 +10,7 @@ export class KanbanBoardDexie extends Dexie {
     constructor() {
         super('checklistitDB');
         this.version(1).stores({
-            boards: '++id, title, tag, updatedAt', // primary key and indexed props
+            boards: '++id, tag, updatedAt', // primary key and indexed props
         });
         // get a Dexie Table object, which is a class that represents our object store
         // this means we can interact with the boards object store using this.boards.add(), etc.
@@ -48,8 +49,9 @@ export class KanbanBoardDexie extends Dexie {
         return this.boards.add({
             title: boardTitle,
             tag: boardTag,
-            createdAt: new Date(Date.now()).toLocaleDateString(),
-            updatedAt: new Date(Date.now()).toLocaleDateString(),
+            slug: stringToSlug(boardTitle),
+            createdAt: new Date(Date.now()).toLocaleString(),
+            updatedAt: new Date(Date.now()).toLocaleString(),
             tasks: { 'task-1': { id: 1, content: '' } },
             columns: {
                 'column-1': {

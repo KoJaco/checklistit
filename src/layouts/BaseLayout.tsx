@@ -1,7 +1,12 @@
+import dynamic from 'next/dynamic';
 import { useUIContext } from '@/contexts/UIContextProvider';
-import Sidebar from '@/components/sidebar/Sidebar';
+// import Sidebar from '@/components/sidebar/Sidebar';
 import Navbar from '@/components/navbar/Navbar';
 import Notification from '@/components/notification/Notification';
+
+const Sidebar = dynamic(() => import('@/components/sidebar/Sidebar'), {
+    ssr: false,
+});
 
 type BaseLayoutProps = {
     children: JSX.Element;

@@ -2,17 +2,7 @@ import { useState } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import Column from './Column';
 
-import type {
-    Board,
-    TaskId,
-    ColumnId,
-    TTask,
-    TColumn,
-} from '@/core/types/kanbanBoard';
-
-import { kanbanBoardMockData } from '@/static/ts/initialData';
-
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import type { Board, TaskId, ColumnId } from '@/core/types/kanbanBoard';
 
 type KanbanProps = {
     title: string;
