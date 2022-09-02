@@ -1,21 +1,23 @@
-import { useReducer } from 'react';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import BaseLayout from '@/layouts/BaseLayout';
 
 import { kanbanBoardMockData } from '@/static/ts/initialData';
-
-import type { TTask, TColumn, Columns, Tasks } from '@/core/types/kanbanBoard';
-
+import type { TTask, TColumn, Board } from '@/core/types/kanbanBoard';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+
+import { initializeBoard } from '@/core/utils/kanbanBoard';
 
 const Kanban = dynamic(() => import('@/components/kanbanBoard/Kanban'), {
     ssr: false,
 });
 
 const Home: NextPage = () => {
-    const [boardState, setBoardState] = useState(kanbanBoardMockData);
+    // const [boardState, setBoardState] = useState(kanbanBoardMockData);
+    const [boardState, setBoardState] = useState<Board>(() => {
+        return initializeBoard(new Date(Date.now()).toLocaleDateString());
+    });
 
     console.log(boardState);
 
@@ -48,7 +50,7 @@ const Home: NextPage = () => {
         const startColumn = boardState.columns[source.droppableId];
         const finishColumn = boardState.columns[destination.droppableId];
 
-        if (startColumn === finishColumn) {
+        if (startColumn === finishColumn && startColumn !== undefined) {
             // create new task id array
             const newTaskIds = Array.from(startColumn.taskIds);
             // move task id from old index to new index
@@ -72,31 +74,33 @@ const Home: NextPage = () => {
             return;
         }
 
-        // moving from one column to another
-        const startTaskIds = Array.from(startColumn.taskIds);
-        startTaskIds.splice(source.index, 1);
+        if (startColumn !== undefined && finishColumn !== undefined) {
+            // moving from one column to another
+            const startTaskIds = Array.from(startColumn.taskIds);
+            startTaskIds.splice(source.index, 1);
 
-        const newStartColumn = {
-            ...startColumn,
-            taskIds: startTaskIds,
-        };
+            const newStartColumn = {
+                ...startColumn,
+                taskIds: startTaskIds,
+            };
 
-        const finishTaskIds = Array.from(finishColumn.taskIds);
-        finishTaskIds.splice(destination.index, 0, draggableId);
-        const newFinishColumn = {
-            ...finishColumn,
-            taskIds: finishTaskIds,
-        };
+            const finishTaskIds = Array.from(finishColumn.taskIds);
+            finishTaskIds.splice(destination.index, 0, draggableId);
+            const newFinishColumn = {
+                ...finishColumn,
+                taskIds: finishTaskIds,
+            };
 
-        const newState = {
-            ...boardState,
-            columns: {
-                ...boardState.columns,
-                [newStartColumn.id]: newStartColumn,
-                [newFinishColumn.id]: newFinishColumn,
-            },
-        };
-        setBoardState(newState);
+            const newState = {
+                ...boardState,
+                columns: {
+                    ...boardState.columns,
+                    [newStartColumn.id]: newStartColumn,
+                    [newFinishColumn.id]: newFinishColumn,
+                },
+            };
+            setBoardState(newState);
+        }
     };
 
     function handleAddTask(task: TTask, columnId: string) {}

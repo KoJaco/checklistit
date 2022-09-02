@@ -2,7 +2,17 @@ import { useState } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import Column from './Column';
 
-import type { Board, TaskId, ColumnId } from '@/core/types/kanbanBoard';
+import type {
+    Board,
+    TaskId,
+    ColumnId,
+    TTask,
+    TColumn,
+} from '@/core/types/kanbanBoard';
+
+import { kanbanBoardMockData } from '@/static/ts/initialData';
+
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
 type KanbanProps = {
     title: string;
@@ -22,21 +32,17 @@ const Kanban = ({ boardState, ...props }: KanbanProps) => {
         return `column-${currentColumnId}`;
     }
 
-    // const inputAction = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     dispatch({
-    //         type: 'SET_TITLE',
-    //     });
-    // };
-
     return (
         <>
             <div className="flex flex-col bg-transparent h-screen w-full">
                 <div className="flex flex-row p-4 ml-2 mb-10 items-center">
                     <p className="text-3xl capitalize text-gray-500 bg-transparent focus:border-none mr-auto">
-                        {props.title}
+                        {props.title.length === 0
+                            ? 'Add a Board Title...'
+                            : props.title}
                     </p>
 
-                    <button className="bg-green-500 p-1 w-12 text-gray-50 rounded-lg">
+                    <button className="text-center bg-green-500 p-1 w-12 text-gray-50 rounded-lg">
                         save
                     </button>
                 </div>
@@ -61,7 +67,11 @@ const Kanban = ({ boardState, ...props }: KanbanProps) => {
                                     return (
                                         <Column
                                             key={column?.id}
-                                            columnTitle={column!.title}
+                                            columnTitle={
+                                                column?.title.length === 0
+                                                    ? 'Add a Column Title...'
+                                                    : column!.title
+                                            }
                                             column={column}
                                             // @ts-ignore
                                             tasks={tasks}

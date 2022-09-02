@@ -7,7 +7,7 @@ export class KanbanBoardDexie extends Dexie {
     constructor() {
         super('checklistitDB');
         this.version(1).stores({
-            boards: '++id, title, updatedAt', // primary key and indexed props
+            boards: '++id, title, tag, updatedAt', // primary key and indexed props
         });
     }
 }

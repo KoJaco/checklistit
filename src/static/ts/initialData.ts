@@ -2,6 +2,23 @@
 //     'board-'
 // }
 
+export const initializedBoard = {
+    id: 'V1StGXR8_Z5jdHi6B-myT',
+    title: '',
+    createdAt: '29/08/2022, 09:37:01',
+    updatedAt: '29/08/2022, 14:12:15',
+    tasks: {
+        'task-1': { id: 1, content: '' },
+    },
+    columns: {
+        'column-1': {
+            id: 1,
+            content: '',
+        },
+    },
+    columnOrder: ['column-1'],
+};
+
 export const kanbanBoardMockData = {
     id: 'board-1',
     title: 'Weekly work',
