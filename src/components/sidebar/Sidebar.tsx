@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { BsKanban } from 'react-icons/bs';
@@ -8,11 +8,15 @@ import { MdOutlineCancel } from 'react-icons/md';
 import clsx from 'clsx';
 
 import ThemeSettings from '@/components/themeSettings/ThemeSettings';
+import Modal from '@/components/modal/Modal';
+import CreateBoardForm from '../kanbanBoard/CreateBoardForm';
 import { useUIContext } from '@/contexts/UIContextProvider';
 
 type SidebarProps = {};
 
 const Sidebar = (props: SidebarProps) => {
+    const [modalOpen, setModalOpen] = useState(true);
+
     const { activeMenu, setActiveMenu, screenSize, currentColor } =
         useUIContext();
 
@@ -24,6 +28,10 @@ const Sidebar = (props: SidebarProps) => {
             setActiveMenu(false);
         }
     };
+
+    function handleOpenCreateBoardForm() {
+        setModalOpen(true);
+    }
 
     const activeLinkStyling =
         "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-white  text-md m-2'";
@@ -42,6 +50,12 @@ const Sidebar = (props: SidebarProps) => {
         <div className="ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10">
             {activeMenu && (
                 <>
+                    <Modal
+                        open={modalOpen}
+                        setOpen={() => setModalOpen(!modalOpen)}
+                    >
+                        <CreateBoardForm />
+                    </Modal>
                     <div className="flex justify-between items-center">
                         <Link href="/">
                             <div

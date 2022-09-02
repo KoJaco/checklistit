@@ -2,11 +2,12 @@ import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
 type ModalProps = {
+    open: boolean;
+    setOpen: (value: boolean) => void;
     children: JSX.Element;
 };
 
-const Modal = ({ children }: ModalProps) => {
-    const [open, setOpen] = useState(true);
+const Modal = ({ open, setOpen, children }: ModalProps) => {
     return (
         <>
             <Transition.Root show={open} as={Fragment}>

@@ -26,6 +26,15 @@ export class KanbanBoardDexie extends Dexie {
                   .toArray();
     }
 
+    getBoardsByTag(boardTag: string) {
+        return this.boards
+            .orderBy('updatedAt')
+            .reverse()
+            .filter((board) => {
+                return board.tag === boardTag;
+            });
+    }
+
     getAllBoards(reverseOrder: boolean) {
         return reverseOrder
             ? this.boards.orderBy('updatedAt').reverse().toArray()
