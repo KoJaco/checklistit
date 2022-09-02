@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { BsKanban } from 'react-icons/bs';
-import { IoColorPaletteOutline } from 'react-icons/io5';
+import { IoColorPaletteOutline, IoCreateOutline } from 'react-icons/io5';
 import { SiShopware } from 'react-icons/si';
 import { MdOutlineCancel } from 'react-icons/md';
 import clsx from 'clsx';
@@ -63,6 +63,14 @@ const Sidebar = (props: SidebarProps) => {
                     </div>
                     <div className="mt-14">
                         <div>
+                            <button className="flex items-center w-full gap-3 mb-10 p-3 mr-3 rounded-lg text-md text-gray-50 bg-transparent group transition-all duration-500 hover:bg-light-gray">
+                                <span className="h-full text-gray-400 group-hover:text-gray-800">
+                                    <IoCreateOutline className="w-6 h-6" />
+                                </span>
+                                <p className="group-hover:text-gray-800 text-gray-400 font-regular uppercase cursor-pointer">
+                                    New Board
+                                </p>
+                            </button>
                             <div className="flex items-center justify-start m-3 mt-4 py-2">
                                 <span className="h-full text-gray-400 mr-4">
                                     <BsKanban className="w-5 h-5" />
